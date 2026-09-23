@@ -191,3 +191,4 @@ export default function DataQualityPage({ batchId }) {
     </div>
   );
 }
+

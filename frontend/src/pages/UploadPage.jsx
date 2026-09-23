@@ -201,9 +201,22 @@ export default function UploadPage({ onBatchReady }) {
               onChange={handleFileChange}
             />
             <Upload className="w-10 h-10 text-slate-400 mx-auto mb-3" />
-            <p className="text-sm font-bold text-slate-800">
-              Drag & drop SOC submission files here, or click to browse
-            </p>
+
+<p className="text-sm font-medium text-slate-700 mb-3">
+  Drag & drop SOC submission files here
+</p>
+
+<button
+  type="button"
+  onClick={(e) => {
+    e.stopPropagation();
+    fileInputRef.current?.click();
+  }}
+  className="inline-flex items-center gap-2.5 rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-md shadow-blue-600/20 transition-all hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-600/25 active:scale-[0.98]"
+>
+  <Upload className="w-4 h-4" />
+  Browse files
+</button>
             <p className="text-xs text-slate-500 mt-1">
               Supports CSV or JSON formats for alert logs, incident cases, and asset inventories.
             </p>

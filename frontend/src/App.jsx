@@ -1,8 +1,9 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { getBatches } from './api';
+import { getBatches, getDemoScenarios } from './api';
 
-import Navbar from './components/Navbar';
+import Sidebar from './components/sidebar';
+import Header from './components/header';
 import UploadPage from './pages/UploadPage';
 import OverviewPage from './pages/OverviewPage';
 import EntitiesPage from './pages/EntitiesPage';
@@ -18,15 +19,28 @@ import ReviewQueuePage from './pages/ReviewQueuePage';
 import TriagePoliciesPage from './pages/TriagePoliciesPage';
 
 export default function App() {
+  return (
+    <BrowserRouter>
+      <AppShell />
+    </BrowserRouter>
+  );
+}
+
+function AppShell() {
   const [batchId, setBatchId] = useState(() => {
     return localStorage.getItem('sat_sa_active_batch') || null;
   });
+  const [batches, setBatches] = useState([]);
+  const [scenarios, setScenarios] = useState([]);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function initBatch() {
       try {
         const res = await getBatches();
         const list = res.data || [];
+        setBatches(list);
         if (list.length > 0) {
           // If current batchId is not valid or empty, pick the most recent batch
           const exists = list.some(b => b.batch_id === batchId);
@@ -43,6 +57,19 @@ export default function App() {
     initBatch();
   }, []);
 
+  useEffect(() => {
+    async function loadMetadata() {
+      try {
+        const [bRes, sRes] = await Promise.all([getBatches(), getDemoScenarios()]);
+        setBatches(bRes.data || []);
+        setScenarios(sRes.data || []);
+      } catch (e) {
+        // Fallback gracefully
+      }
+    }
+    loadMetadata();
+  }, [batchId]);
+
   const handleBatchChange = (newBatchId) => {
     setBatchId(newBatchId);
     if (newBatchId) {
@@ -52,15 +79,33 @@ export default function App() {
     }
   };
 
+  const handleSelectScenario = (sc) => {
+    navigate(sc.target_route);
+  };
+
   return (
-    <BrowserRouter>
-      <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans">
-        
-        {/* Global Government/Enterprise Supervisory Header */}
-        <Navbar batchId={batchId} onBatchChange={handleBatchChange} />
+    <div className="min-h-screen flex bg-gradient-to-b from-mint-page to-mint-pageAlt font-sans text-mint-primaryText">
+
+      {/* Primary application navigation */}
+      <Sidebar
+        batchId={batchId}
+        batches={batches}
+        onSelectBatch={handleBatchChange}
+        mobileOpen={mobileSidebarOpen}
+        onCloseMobile={() => setMobileSidebarOpen(false)}
+      />
+
+      <div className="flex-1 flex flex-col min-w-0 lg:pl-[256px]">
+
+        {/* Compact contextual header */}
+        <Header
+          scenarios={scenarios}
+          onSelectScenario={handleSelectScenario}
+          onOpenMobileSidebar={() => setMobileSidebarOpen(true)}
+        />
 
         {/* Main Supervisory Operational Workspace */}
-        <main className="flex-1 min-h-[calc(100vh-80px)]">
+        <main className="flex-1">
           <Routes>
 
             {/* Ingestion Gateway */}
@@ -227,16 +272,16 @@ export default function App() {
         </main>
 
         {/* Global Supervisory System Footer */}
-        <footer className="border-t border-slate-200 bg-white py-3 px-6 text-center text-xs text-slate-500 font-mono flex flex-wrap items-center justify-between gap-2 print:hidden">
+        <footer className="border-t border-mint-border bg-white py-3 px-6 text-center text-xs text-mint-secondaryText font-mono flex flex-wrap items-center justify-between gap-2 print:hidden">
           <span>
             SAT-SA · Supervisory Analytics Tool for SOC Assessment · Version 1.2
           </span>
-          <span className="text-slate-400 text-[11px]">
+          <span className="text-mint-secondary text-[11px]">
             NCIIPC / NTRO Framework Compliance · Air-Gapped Verification Engine
           </span>
         </footer>
 
       </div>
-    </BrowserRouter>
+    </div>
   );
 }

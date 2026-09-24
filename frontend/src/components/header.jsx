@@ -1,13 +1,30 @@
 import React, { useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { Menu, PlayCircle, Upload, ChevronDown, Clock, ChevronRight as Sep } from 'lucide-react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, PlayCircle, Upload, ChevronDown, Clock, Bell, ChevronRight as Sep } from 'lucide-react';
 import { getPageMeta } from '../navConfig';
 
-export default function Header({ scenarios, onSelectScenario, onOpenMobileSidebar }) {
+    export default function Header({
+  scenarios,
+  onSelectScenario,
+  onOpenMobileSidebar,
+  onLogout,
+}) {
+    const navigate = useNavigate();
+
+const userEmail =
+  localStorage.getItem('sat_sa_user_email') || 'User';
+
+  const handleLogout = () => {
+  localStorage.removeItem('sat_sa_logged_in');
+  localStorage.removeItem('sat_sa_user_email');
+
+  onLogout();
+  navigate('/login', { replace: true });
+};
   const location = useLocation();
   const { title, breadcrumb } = getPageMeta(location.pathname);
   const [showDemoDropdown, setShowDemoDropdown] = useState(false);
-
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
   return (
     <header className="sticky top-0 z-20 w-full bg-white/95 backdrop-blur border-b border-border-slate-200">
       <div className="flex h-16 items-center justify-between gap-4 px-4 md:px-6">
@@ -94,6 +111,15 @@ export default function Header({ scenarios, onSelectScenario, onOpenMobileSideba
               </div>
             )}
           </div>
+             <button
+          type="button"
+          className="relative flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-all hover:bg-blue-50 hover:text-blue-600"
+          title="Notifications"
+        >
+          <Bell className="h-4 w-4" />
+
+          <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-blue-600 ring-2 ring-white" />
+        </button>
 
           {/* Ingest Data */}
           <NavLink
@@ -103,6 +129,64 @@ export default function Header({ scenarios, onSelectScenario, onOpenMobileSideba
             <Upload className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Ingest Data</span>
           </NavLink>
+         {/* User Profile */}
+<div className="relative">
+  <button
+    type="button"
+    onClick={() => setShowUserDropdown((prev) => !prev)}
+    className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-slate-50 transition-colors"
+  >
+    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-700">
+      {userEmail.charAt(0).toUpperCase()}
+    </div>
+
+    <div className="hidden lg:block text-left max-w-[150px]">
+      <div className="truncate text-xs font-semibold text-slate-700">
+        {userEmail}
+      </div>
+
+      <div className="text-[10px] text-slate-400">
+        Assessment Analyst
+      </div>
+    </div>
+
+    <ChevronDown
+      className={[
+        'h-3.5 w-3.5 text-slate-400 transition-transform',
+        showUserDropdown ? 'rotate-180' : '',
+      ].join(' ')}
+    />
+  </button>
+
+  {showUserDropdown && (
+    <div className="absolute right-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-900/10">
+      <div className="border-b border-slate-100 px-4 py-3">
+        <div className="text-xs font-semibold text-slate-800">
+          Signed in as
+        </div>
+
+        <div className="mt-1 truncate text-xs text-slate-500">
+          {userEmail}
+        </div>
+
+        <div className="mt-2 flex items-center gap-1.5 text-[10px] text-emerald-600">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+          Workspace active
+        </div>
+      </div>
+
+      <div className="p-1.5">
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="w-full rounded-lg px-3 py-2 text-left text-xs font-medium text-red-600 hover:bg-red-50 transition-colors"
+        >
+          Sign out
+        </button>
+      </div>
+    </div>
+  )}
+</div>
         </div>
       </div>
     </header>

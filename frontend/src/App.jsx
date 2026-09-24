@@ -5,6 +5,7 @@ import { getBatches, getDemoScenarios } from './api';
 import Sidebar from './components/sidebar';
 import Header from './components/header';
 import UploadPage from './pages/UploadPage';
+import LoginPage from './pages/loginPage';
 import OverviewPage from './pages/OverviewPage';
 import EntitiesPage from './pages/EntitiesPage';
 import DrilldownPage from './pages/DrilldownPage';
@@ -27,6 +28,9 @@ export default function App() {
 }
 
 function AppShell() {
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    return localStorage.getItem('sat_sa_logged_in') === 'true';
+  });
   const [batchId, setBatchId] = useState(() => {
     return localStorage.getItem('sat_sa_active_batch') || null;
   });
@@ -69,6 +73,9 @@ function AppShell() {
     }
     loadMetadata();
   }, [batchId]);
+  const handleLogin = () => {
+  setIsLoggedIn(true);
+};
 
   const handleBatchChange = (newBatchId) => {
     setBatchId(newBatchId);
@@ -99,176 +106,228 @@ function AppShell() {
 
         {/* Compact contextual header */}
         <Header
-          scenarios={scenarios}
-          onSelectScenario={handleSelectScenario}
-          onOpenMobileSidebar={() => setMobileSidebarOpen(true)}
-        />
+         
+  scenarios={scenarios}
+  onSelectScenario={handleSelectScenario}
+  onOpenMobileSidebar={() => setMobileSidebarOpen(true)}
+  onLogout={() => setIsLoggedIn(false)}
+/>
 
         {/* Main Supervisory Operational Workspace */}
         <main className="flex-1">
-          <Routes>
+         <Routes>
+  {/* Login */}
+  <Route
+    path="/login"
+    element={
+      isLoggedIn ? (
+        <Navigate to="/upload" replace />
+      ) : (
+        <LoginPage onLogin={handleLogin} />
+      )
+    }
+  />
 
-            {/* Ingestion Gateway */}
-            <Route
-              path="/"
-              element={<UploadPage onBatchReady={handleBatchChange} />}
-            />
-            <Route
-              path="/upload"
-              element={<UploadPage onBatchReady={handleBatchChange} />}
-            />
+  {/* Upload */}
+  <Route
+    path="/"
+    element={
+      isLoggedIn ? (
+        <UploadPage onBatchReady={handleBatchChange} />
+      ) : (
+        <Navigate to="/login" replace />
+      )
+    }
+  />
 
-            {/* Executive Overview */}
-            <Route
-              path="/overview"
-              element={
-                batchId ? (
-                  <OverviewPage batchId={batchId} />
-                ) : (
-                  <Navigate to="/" replace />
-                )
-              }
-            />
+  <Route
+    path="/upload"
+    element={
+      isLoggedIn ? (
+        <UploadPage onBatchReady={handleBatchChange} />
+      ) : (
+        <Navigate to="/login" replace />
+      )
+    }
+  />
 
-            {/* Entity Registry */}
-            <Route
-              path="/entities"
-              element={
-                batchId ? (
-                  <EntitiesPage batchId={batchId} />
-                ) : (
-                  <Navigate to="/" replace />
-                )
-              }
-            />
+  {/* Dashboard */}
+  <Route
+    path="/overview"
+    element={
+      !isLoggedIn ? (
+        <Navigate to="/login" replace />
+      ) : batchId ? (
+        <OverviewPage batchId={batchId} />
+      ) : (
+        <Navigate to="/upload" replace />
+      )
+    }
+  />
 
-            {/* Backward Compatibility for /ranking */}
-            <Route
-              path="/ranking"
-              element={<Navigate to="/entities" replace />}
-            />
+  <Route
+    path="/entities"
+    element={
+      !isLoggedIn ? (
+        <Navigate to="/login" replace />
+      ) : batchId ? (
+        <EntitiesPage batchId={batchId} />
+      ) : (
+        <Navigate to="/upload" replace />
+      )
+    }
+  />
 
-            {/* Individual Entity Supervisory Dossier */}
-            <Route
-              path="/entity/:cseId"
-              element={
-                batchId ? (
-                  <DrilldownPage batchId={batchId} />
-                ) : (
-                  <Navigate to="/" replace />
-                )
-              }
-            />
+  <Route
+    path="/ranking"
+    element={<Navigate to="/entities" replace />}
+  />
 
-            {/* Unified Supervisory Findings Registry & Triage */}
-            <Route
-              path="/findings"
-              element={
-                batchId ? (
-                  <FindingsPage batchId={batchId} />
-                ) : (
-                  <Navigate to="/" replace />
-                )
-              }
-            />
+  <Route
+    path="/entity/:cseId"
+    element={
+      !isLoggedIn ? (
+        <Navigate to="/login" replace />
+      ) : batchId ? (
+        <DrilldownPage batchId={batchId} />
+      ) : (
+        <Navigate to="/upload" replace />
+      )
+    }
+  />
 
-            {/* Risk-Weighted Stratified Sample Review Queue */}
-            <Route
-              path="/review-queue"
-              element={
-                batchId ? (
-                  <ReviewQueuePage batchId={batchId} />
-                ) : (
-                  <Navigate to="/" replace />
-                )
-              }
-            />
+  <Route
+    path="/findings"
+    element={
+      !isLoggedIn ? (
+        <Navigate to="/login" replace />
+      ) : batchId ? (
+        <FindingsPage batchId={batchId} />
+      ) : (
+        <Navigate to="/upload" replace />
+      )
+    }
+  />
 
-            {/* Auto-Triage Policy Configuration */}
-            <Route
-              path="/triage-policies"
-              element={<TriagePoliciesPage />}
-            />
+  <Route
+    path="/review-queue"
+    element={
+      !isLoggedIn ? (
+        <Navigate to="/login" replace />
+      ) : batchId ? (
+        <ReviewQueuePage batchId={batchId} />
+      ) : (
+        <Navigate to="/upload" replace />
+      )
+    }
+  />
 
-            {/* Negative-Space Analysis */}
-            <Route
-              path="/negative-space"
-              element={
-                batchId ? (
-                  <NegativeSpacePage batchId={batchId} />
-                ) : (
-                  <Navigate to="/" replace />
-                )
-              }
-            />
+  <Route
+    path="/triage-policies"
+    element={
+      isLoggedIn ? (
+        <TriagePoliciesPage />
+      ) : (
+        <Navigate to="/login" replace />
+      )
+    }
+  />
 
-            {/* Execution Gaps Audit */}
-            <Route
-              path="/execution-gaps"
-              element={
-                batchId ? (
-                  <ExecutionGapsPage batchId={batchId} />
-                ) : (
-                  <Navigate to="/" replace />
-                )
-              }
-            />
+  <Route
+    path="/negative-space"
+    element={
+      !isLoggedIn ? (
+        <Navigate to="/login" replace />
+      ) : batchId ? (
+        <NegativeSpacePage batchId={batchId} />
+      ) : (
+        <Navigate to="/upload" replace />
+      )
+    }
+  />
 
-            {/* Cross-Entity Analytics & 3D Topology */}
-            <Route
-              path="/analytics"
-              element={
-                batchId ? (
-                  <AnalyticsPage batchId={batchId} />
-                ) : (
-                  <Navigate to="/" replace />
-                )
-              }
-            />
+  <Route
+    path="/execution-gaps"
+    element={
+      !isLoggedIn ? (
+        <Navigate to="/login" replace />
+      ) : batchId ? (
+        <ExecutionGapsPage batchId={batchId} />
+      ) : (
+        <Navigate to="/upload" replace />
+      )
+    }
+  />
 
-            {/* Operational Evidence Explorer */}
-            <Route
-              path="/evidence"
-              element={
-                batchId ? (
-                  <EvidencePage batchId={batchId} />
-                ) : (
-                  <Navigate to="/" replace />
-                )
-              }
-            />
+  <Route
+    path="/analytics"
+    element={
+      !isLoggedIn ? (
+        <Navigate to="/login" replace />
+      ) : batchId ? (
+        <AnalyticsPage batchId={batchId} />
+      ) : (
+        <Navigate to="/upload" replace />
+      )
+    }
+  />
 
-            {/* Official Audit Report */}
-            <Route
-              path="/reports"
-              element={
-                batchId ? (
-                  <ReportsPage batchId={batchId} />
-                ) : (
-                  <Navigate to="/" replace />
-                )
-              }
-            />
+  <Route
+    path="/evidence"
+    element={
+      !isLoggedIn ? (
+        <Navigate to="/login" replace />
+      ) : batchId ? (
+        <EvidencePage batchId={batchId} />
+      ) : (
+        <Navigate to="/upload" replace />
+      )
+    }
+  />
 
-            {/* Data Quality & Schema Compliance */}
-            <Route
-              path="/data-quality"
-              element={
-                batchId ? (
-                  <DataQualityPage batchId={batchId} />
-                ) : (
-                  <Navigate to="/" replace />
-                )
-              }
-            />
+  <Route
+    path="/reports"
+    element={
+      !isLoggedIn ? (
+        <Navigate to="/login" replace />
+      ) : batchId ? (
+        <ReportsPage batchId={batchId} />
+      ) : (
+        <Navigate to="/upload" replace />
+      )
+    }
+  />
 
-            {/* Catch-all Fallback */}
-            <Route
-              path="*"
-              element={<Navigate to={batchId ? "/overview" : "/"} replace />}
-            />
+  <Route
+    path="/data-quality"
+    element={
+      !isLoggedIn ? (
+        <Navigate to="/login" replace />
+      ) : batchId ? (
+        <DataQualityPage batchId={batchId} />
+      ) : (
+        <Navigate to="/upload" replace />
+      )
+    }
+  />
 
-          </Routes>
+  {/* Unknown route */}
+  <Route
+    path="*"
+    element={
+      <Navigate
+        to={
+          !isLoggedIn
+            ? "/login"
+            : batchId
+              ? "/overview"
+              : "/upload"
+        }
+        replace
+      />
+    }
+  />
+</Routes>
         </main>
 
         {/* Global Supervisory System Footer */}

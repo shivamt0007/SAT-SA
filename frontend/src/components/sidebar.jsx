@@ -15,11 +15,11 @@ function computeInitialOpenGroups(pathname) {
 
 export default function Sidebar({ batchId, batches, onSelectBatch, mobileOpen, onCloseMobile }) {
   const location = useLocation();
+    const activeBatch = batches.find((b) => b.batch_id === batchId);
   const [openGroups, setOpenGroups] = useState(() => computeInitialOpenGroups(location.pathname));
   const [showBatchDropdown, setShowBatchDropdown] = useState(false);
 
-  // Auto-expand whichever group contains the active route (e.g. deep-linking to /findings).
-  // Never auto-collapses a group the user has manually opened.
+ 
   useEffect(() => {
     NAV_STRUCTURE.forEach((item) => {
       if (item.type === 'group' && item.children.some((c) => c.path === location.pathname)) {
@@ -33,16 +33,22 @@ export default function Sidebar({ batchId, batches, onSelectBatch, mobileOpen, o
   };
 
    const linkBase =
-    'flex items-center gap-2.5 px-3 py-2 rounded-md text-[13px] font-medium transition-colors border-l-[3px]';
-    const linkActive =
-  'bg-blue-50 text-blue-700 font-semibold';
-   const linkInactive =
-  'text-slate-700 hover:bg-blue-50/60 hover:text-blue-700';
+  'flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-all duration-150 border-l-[3px]';
 
-  const childLinkBase =
-    'flex items-center gap-2 pl-9 pr-3 py-1.5 rounded-md text-[13px] transition-colors border-l-[3px]';
-  const childActive = 'bg-mint-active text-mint-activeText font-semibold border-mint-accent';
-  const childInactive = 'text-mint-text hover:bg-mint-active/50 border-transparent';
+const linkActive =
+  'bg-blue-500/20 text-white font-semibold border-blue-400 shadow-sm';
+
+const linkInactive =
+  'text-slate-200 border-transparent hover:bg-blue-400/10 hover:text-white';
+
+const childLinkBase =
+  'flex items-center gap-2 pl-9 pr-3 py-2 rounded-lg text-[12px] transition-all duration-150 border-l-[3px]';
+
+const childActive =
+  'bg-blue-400/15 text-blue-200 font-semibold border-blue-400';
+
+const childInactive =
+  'text-slate-300 border-transparent hover:bg-blue-400/10 hover:text-white';
 
  
 
@@ -58,8 +64,7 @@ export default function Sidebar({ batchId, batches, onSelectBatch, mobileOpen, o
 
       <aside
         className={[
-          'fixed inset-y-0 left-0 z-40 w-[256px] bg-[#E3F1F5] border-r border-mint-border',
-          'flex flex-col transition-transform duration-200 ease-out',
+         'fixed inset-y-0 left-0 z-40 w-[256px] bg-[#082B4C] border-r border-[#16476E]',
           mobileOpen ? 'translate-x-0' : '-translate-x-full',
           'lg:translate-x-0',
         ].join(' ')}
@@ -86,6 +91,55 @@ export default function Sidebar({ batchId, batches, onSelectBatch, mobileOpen, o
             <X className="w-4 h-4" />
           </button>
         </div>
+        {/* Current Assessment */}
+<div className="mx-3 mb-3 rounded-lg border border-slate-200 bg-white/70 p-3">
+  <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+    Current Assessment
+  </div>
+
+  <div className="truncate text-sm font-semibold text-slate-800">
+    {activeBatch?.batch_id || 'No active batch'}
+  </div>
+
+  <div className="mt-1 flex items-center gap-1.5 text-[11px] text-slate-500">
+    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+    {activeBatch ? 'Analysis workspace' : 'Upload data to begin'}
+  </div>
+
+  {batches.length > 1 && (
+    <button
+      type="button"
+      onClick={() => setShowBatchDropdown((prev) => !prev)}
+      className="mt-2 text-[11px] font-semibold text-blue-600 hover:text-blue-700"
+    >
+      Change assessment
+    </button>
+  )}
+
+  {showBatchDropdown && batches.length > 1 && (
+    <div className="mt-2 space-y-1 border-t border-slate-100 pt-2">
+      {batches.map((batch) => (
+        <button
+          key={batch.batch_id}
+          type="button"
+          onClick={() => {
+            onSelectBatch(batch.batch_id);
+            setShowBatchDropdown(false);
+          }}
+          className={[
+            'w-full rounded-md px-2 py-1.5 text-left text-xs transition-colors',
+            batch.batch_id === batchId
+              ? 'bg-blue-50 font-semibold text-blue-700'
+              : 'text-slate-600 hover:bg-slate-50',
+          ].join(' ')}
+        >
+          {batch.batch_id}
+        </button>
+      ))}
+    </div>
+  )}
+</div>
+        
 
         {/* Active batch switcher */}
         <div className="px-4 pb-3 relative">

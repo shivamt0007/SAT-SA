@@ -109,7 +109,7 @@ export default function UploadPage({ onBatchReady }) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8 mt-4">
+    <div className="w-full max-w-6xl mx-auto px-6 py-6 space-y-6">
       
       {/* Page Header */}
       <div className="border-b border-slate-200 pb-4">

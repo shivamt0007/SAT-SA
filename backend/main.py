@@ -4,8 +4,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from .db import engine, ensure_schema_columns
-from .models.orm import Base
+from .db import engine, ensure_schema_columns, SessionLocal
+from .models.orm import Base, BatchRecord, CSEFeatures, AlertRecord
 from .routers import ingest, analyse, entities
 
 # Create DB tables on startup
@@ -29,6 +29,54 @@ app.add_middleware(
 app.include_router(ingest.router, prefix="/api", tags=["ingest"])
 app.include_router(analyse.router, prefix="/api", tags=["analyse"])
 app.include_router(entities.router, prefix="/api", tags=["entities"])
+app.include_router(ingest.router, prefix="/api", tags=["ingest"])
+app.include_router(analyse.router, prefix="/api", tags=["analyse"])
+app.include_router(entities.router, prefix="/api", tags=["entities"])
+
+
+@app.get("/api/batches")
+def get_batches():
+    db = SessionLocal()
+
+    try:
+        batches = (
+            db.query(BatchRecord)
+            .order_by(BatchRecord.created_at.desc())
+            .all()
+        )
+
+        result = []
+
+        for batch in batches:
+            cse_count = (
+                db.query(CSEFeatures)
+                .filter(CSEFeatures.batch_id == batch.id)
+                .count()
+            )
+
+            alert_count = (
+                db.query(AlertRecord)
+                .filter(AlertRecord.batch_id == batch.id)
+                .count()
+            )
+
+            result.append({
+                "batch_id": batch.id,
+                "created_at": batch.created_at,
+                "status": batch.status,
+                "cse_count": cse_count,
+                "alert_count": alert_count,
+            })
+
+        return result
+
+    finally:
+        db.close()
+
+
+@app.get("/health")
+def health():
+    return {"status": "ok", "service": "SAT-SA"}
 
 @app.get("/health")
 def health():

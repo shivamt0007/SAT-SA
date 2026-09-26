@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  FileText, Printer, Download, Shield, CheckCircle2, 
-  AlertTriangle, Building2, GitBranch, EyeOff, Lock 
-} from 'lucide-react';
+﻿import React, { useState, useEffect } from 'react';
+import { FileText, Printer, Lock } from 'lucide-react';
 import { getSupervisoryReport } from '../api';
 import RiskBadge from '../components/RiskBadge';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -47,7 +44,7 @@ export default function ReportsPage({ batchId }) {
     <div className="max-w-[1200px] mx-auto p-6 space-y-6 pb-20 print:p-0 print:max-w-none">
       
       {/* Non-printed Toolbar */}
-      <div className="flex items-center justify-between print:hidden border-b border-slate-200 pb-4">
+      <div className="flex items-center justify-between print:hidden border-b border-line pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-blue-700 uppercase tracking-wider mb-1">
             <FileText className="w-4 h-4" />
@@ -63,7 +60,7 @@ export default function ReportsPage({ batchId }) {
 
         <button
           onClick={handlePrint}
-          className="flex items-center gap-2 px-4 py-2 rounded text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white transition-colors shadow-xs"
+          className="flex items-center gap-2 px-4 py-2 rounded text-xs font-bold bg-paper hover:bg-slate-700 text-white transition-colors shadow-xs"
         >
           <Printer className="w-4 h-4" />
           Print / Save as PDF
@@ -71,7 +68,7 @@ export default function ReportsPage({ batchId }) {
       </div>
 
       {/* Printable Report Document Container */}
-      <div className="bg-white border border-slate-300 rounded-lg p-8 sm:p-12 shadow-sm space-y-8 print:border-0 print:p-4 print:shadow-none">
+      <div className="bg-paper border border-slate-300 rounded-lg p-8 sm:p-12 shadow-sm space-y-8 print:border-0 print:p-4 print:shadow-none">
         
         {/* Document Header & Classification Banner */}
         <div className="border-b-2 border-slate-900 pb-6 space-y-4">
@@ -96,7 +93,7 @@ export default function ReportsPage({ batchId }) {
             </div>
           </div>
 
-          <div className="bg-slate-50 border border-slate-200 p-3 rounded text-xs text-slate-700 grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono">
+          <div className="bg-slate-50 border border-line p-3 rounded text-xs text-slate-700 grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono">
             <div>
               <span className="text-slate-400 block text-[10px] uppercase">Batch ID</span>
               <strong className="text-slate-900">{batchId.slice(0, 12)}...</strong>
@@ -118,7 +115,7 @@ export default function ReportsPage({ batchId }) {
 
         {/* Section 1: Executive Summary */}
         <div className="space-y-3">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-blue-900 border-b border-slate-200 pb-1 flex items-center gap-1.5">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-blue-900 border-b border-line pb-1 flex items-center gap-1.5">
             1.0 Executive Assessment Summary
           </h3>
           <p className="text-xs text-slate-700 leading-relaxed text-justify">
@@ -131,19 +128,19 @@ export default function ReportsPage({ batchId }) {
           </p>
 
           <div className="grid grid-cols-4 gap-3 text-center pt-2">
-            <div className="border border-slate-200 rounded p-2.5 bg-slate-50">
+            <div className="border border-line rounded p-2.5 bg-slate-50">
               <div className="text-[10px] font-bold text-slate-500 uppercase">Critical Tier</div>
               <div className="text-xl font-bold font-mono text-rose-600 mt-0.5">{overview.risk_distribution?.critical || 0}</div>
             </div>
-            <div className="border border-slate-200 rounded p-2.5 bg-slate-50">
+            <div className="border border-line rounded p-2.5 bg-slate-50">
               <div className="text-[10px] font-bold text-slate-500 uppercase">High Tier</div>
               <div className="text-xl font-bold font-mono text-amber-600 mt-0.5">{overview.risk_distribution?.high || 0}</div>
             </div>
-            <div className="border border-slate-200 rounded p-2.5 bg-slate-50">
+            <div className="border border-line rounded p-2.5 bg-slate-50">
               <div className="text-[10px] font-bold text-slate-500 uppercase">Execution Gaps</div>
               <div className="text-xl font-bold font-mono text-slate-900 mt-0.5">{overview.execution_gap_count || 0}</div>
             </div>
-            <div className="border border-slate-200 rounded p-2.5 bg-slate-50">
+            <div className="border border-line rounded p-2.5 bg-slate-50">
               <div className="text-[10px] font-bold text-slate-500 uppercase">Blind Spots</div>
               <div className="text-xl font-bold font-mono text-purple-700 mt-0.5">{overview.negative_space_count || 0}</div>
             </div>
@@ -152,12 +149,12 @@ export default function ReportsPage({ batchId }) {
 
         {/* Section 2: Entity Risk Scorecard */}
         <div className="space-y-3">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-blue-900 border-b border-slate-200 pb-1">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-blue-900 border-b border-line pb-1">
             2.0 Entity Operational Risk Scorecard
           </h3>
-          <div className="border border-slate-200 rounded overflow-hidden">
+          <div className="border border-line rounded overflow-hidden">
             <table className="w-full text-left text-[11px]">
-              <thead className="bg-slate-100 text-slate-700 font-bold uppercase text-[10px] border-b border-slate-200">
+              <thead className="bg-slate-100 text-slate-700 font-bold uppercase text-[10px] border-b border-line">
                 <tr>
                   <th className="p-2.5">CSE ID</th>
                   <th className="p-2.5">Sector</th>
@@ -168,7 +165,7 @@ export default function ReportsPage({ batchId }) {
                   <th className="p-2.5">Primary Grounded Rationale</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-line">
                 {entities.map((e) => (
                   <tr key={e.cse_id} className={e.is_grey ? 'bg-slate-50 text-slate-500' : ''}>
                     <td className="p-2.5 font-mono font-bold">{e.cse_id}</td>
@@ -191,12 +188,12 @@ export default function ReportsPage({ batchId }) {
 
         {/* Section 3: High Priority Findings Register */}
         <div className="space-y-3">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-blue-900 border-b border-slate-200 pb-1">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-blue-900 border-b border-line pb-1">
             3.0 Priority Supervisory Findings Register
           </h3>
-          <div className="border border-slate-200 rounded overflow-hidden">
+          <div className="border border-line rounded overflow-hidden">
             <table className="w-full text-left text-[11px]">
-              <thead className="bg-slate-100 text-slate-700 font-bold uppercase text-[10px] border-b border-slate-200">
+              <thead className="bg-slate-100 text-slate-700 font-bold uppercase text-[10px] border-b border-line">
                 <tr>
                   <th className="p-2.5">ID</th>
                   <th className="p-2.5">Entity</th>
@@ -206,7 +203,7 @@ export default function ReportsPage({ batchId }) {
                   <th className="p-2.5">Evidence Records</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-line">
                 {findings.slice(0, 8).map((f, i) => (
                   <tr key={i}>
                     <td className="p-2.5 font-mono text-slate-500">{f.finding_id || f.rule_id}</td>
@@ -227,7 +224,7 @@ export default function ReportsPage({ batchId }) {
 
         {/* Section 4: Recommended Corrective Directives */}
         <div className="space-y-3">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-blue-900 border-b border-slate-200 pb-1">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-blue-900 border-b border-line pb-1">
             4.0 Supervisory Recommendations & Corrective Directives
           </h3>
           <ol className="list-decimal list-inside space-y-1 text-xs text-slate-700">

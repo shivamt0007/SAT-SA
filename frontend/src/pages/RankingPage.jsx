@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+﻿import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getEntities } from '../api';
 import RiskBadge from '../components/RiskBadge';
@@ -67,7 +67,7 @@ export default function RankingPage({ batchId }) {
       
       {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
       
-      <div className="flex flex-wrap gap-6 mb-6 items-center bg-slate-800/60 p-4 rounded-xl border border-slate-700">
+      <div className="flex flex-wrap gap-6 mb-6 items-center bg-slate-700/60 p-4 rounded-xl border border-slate-700">
         <div className="flex items-center gap-3">
           <span className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Risk Level:</span>
           <div className="flex flex-wrap gap-1.5">
@@ -78,7 +78,7 @@ export default function RankingPage({ batchId }) {
                 className={`px-3 py-1 rounded-md text-xs font-semibold uppercase transition-colors ${
                   filterLevel === lvl 
                     ? 'bg-blue-600 text-white shadow-sm' 
-                    : 'bg-slate-900/80 text-slate-300 border border-slate-700 hover:bg-slate-700'
+                    : 'bg-paper/80 text-slate-300 border border-slate-700 hover:bg-slate-700'
                 }`}
               >
                 {lvl}
@@ -98,7 +98,7 @@ export default function RankingPage({ batchId }) {
                   className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${
                     filterSector === sec 
                       ? 'bg-blue-600 text-white shadow-sm' 
-                      : 'bg-slate-900/80 text-slate-300 border border-slate-700 hover:bg-slate-700'
+                      : 'bg-paper/80 text-slate-300 border border-slate-700 hover:bg-slate-700'
                   }`}
                 >
                   {sec}
@@ -109,14 +109,14 @@ export default function RankingPage({ batchId }) {
         )}
       </div>
 
-      <div className="bg-slate-800 rounded-xl border border-slate-700 overflow-hidden">
+      <div className="bg-slate-700 rounded-xl border border-slate-700 overflow-hidden">
         {filteredEntities.length === 0 ? (
           <div className="p-12 text-center text-slate-400">
             No entities found in this batch matching selected filters.
           </div>
         ) : (
           <table className="w-full text-left text-sm">
-            <thead className="bg-slate-900/80 text-slate-400 border-b border-slate-700 uppercase text-xs font-semibold">
+            <thead className="bg-paper/80 text-slate-400 border-b border-slate-700 uppercase text-xs font-semibold">
               <tr>
                 <th className="p-4">CSE ID</th>
                 <th className="p-4">Sector</th>
@@ -142,7 +142,7 @@ export default function RankingPage({ batchId }) {
                   <tr 
                     key={entity.cse_id} 
                     onClick={() => navigate(`/entity/${entity.cse_id}`)}
-                    className={`border-b border-slate-700/50 hover:bg-slate-700/40 cursor-pointer transition-colors ${isUnassessed ? 'opacity-60 bg-slate-900/30' : ''}`}
+                    className={`border-b border-slate-700/50 hover:bg-slate-700/40 cursor-pointer transition-colors ${isUnassessed ? 'opacity-60 bg-paper/30' : ''}`}
                   >
                     <td className={`p-4 font-mono ${isUnassessed ? 'italic text-slate-400' : 'text-blue-400 font-bold'}`}>
                       {entity.cse_id}
@@ -151,7 +151,7 @@ export default function RankingPage({ batchId }) {
                     <td className="p-4">
                       <div className="flex items-center gap-3">
                         <span className="w-10 font-bold text-slate-100">{score.toFixed(1)}</span>
-                        <div className="w-24 bg-slate-900 rounded-full h-2 overflow-hidden border border-slate-700/50">
+                        <div className="w-24 bg-paper rounded-full h-2 overflow-hidden border border-slate-700/50">
                           <div className={`h-full ${barColor}`} style={{ width: `${Math.min(score, 100)}%` }} />
                         </div>
                       </div>
@@ -163,7 +163,7 @@ export default function RankingPage({ batchId }) {
                       {entity.primary_reason || '—'}
                     </td>
                     <td className="p-4 text-center">
-                      <span className="bg-slate-900 border border-slate-700 px-2 py-0.5 rounded-full text-xs font-mono text-slate-300 font-semibold">
+                      <span className="bg-paper border border-slate-700 px-2 py-0.5 rounded-full text-xs font-mono text-slate-300 font-semibold">
                         {entity.flag_count ?? 0}
                       </span>
                     </td>

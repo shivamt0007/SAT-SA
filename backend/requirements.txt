@@ -1,4 +1,5 @@
 fastapi>=0.111.0
+httpx2>=2.13.1
 uvicorn[standard]>=0.29.0
 pandas>=2.2.3
 scikit-learn>=1.5.0

@@ -1,9 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+﻿import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Building2, Search, Filter, ArrowUpDown, ChevronRight, 
-  AlertTriangle, ShieldCheck, HelpCircle, Activity 
-} from 'lucide-react';
+import { Building2, Search, Filter, ArrowUpDown, ChevronRight } from 'lucide-react';
 import { getEntities } from '../api';
 import RiskBadge from '../components/RiskBadge';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -100,10 +97,10 @@ export default function EntitiesPage({ batchId }) {
   const levels = ['All', 'CRITICAL', 'HIGH', 'MEDIUM', 'LOW', 'UNASSESSED'];
 
   return (
-    <div className="max-w-[1700px] mx-auto p-6 space-y-6">
+    <div className="max-w-[1600px] mx-auto px-6 py-5 space-y-5">
       
       {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-line pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-blue-700 uppercase tracking-wider mb-1">
             <Building2 className="w-4 h-4" />
@@ -118,7 +115,7 @@ export default function EntitiesPage({ batchId }) {
         </div>
 
         <div className="flex items-center gap-3 text-xs">
-          <span className="px-3 py-1.5 rounded bg-slate-100 border border-slate-200 text-slate-700 font-mono font-medium">
+          <span className="px-3 py-1.5 rounded bg-slate-100 border border-line text-slate-700 font-mono font-medium">
             Total Entities: <strong>{entities.length}</strong>
           </span>
           <span className="px-3 py-1.5 rounded bg-red-50 border border-red-200 text-red-700 font-mono font-medium">
@@ -130,7 +127,7 @@ export default function EntitiesPage({ batchId }) {
       {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
 
       {/* Filter and Search Bar */}
-      <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs space-y-4">
+      <div className="bg-paper border border-line rounded-lg p-4 shadow-xs space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-4">
           
           {/* Search Input */}
@@ -141,7 +138,7 @@ export default function EntitiesPage({ batchId }) {
               placeholder="Search by CSE ID, primary finding, or sector..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded focus:bg-white focus:border-blue-500 focus:outline-none transition-colors"
+              className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-line rounded focus:bg-slate-100 focus:border-brand-800 focus:outline-none transition-colors"
             />
           </div>
 
@@ -155,8 +152,8 @@ export default function EntitiesPage({ batchId }) {
                   onClick={() => setFilterLevel(lvl)}
                   className={`px-2.5 py-1 rounded text-xs font-semibold uppercase transition-colors ${
                     filterLevel === lvl
-                      ? 'bg-blue-700 text-white shadow-xs'
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+                      ? 'bg-blue-500 text-white shadow-xs'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-line'
                   }`}
                 >
                   {lvl}
@@ -176,8 +173,8 @@ export default function EntitiesPage({ batchId }) {
                     onClick={() => setFilterSector(sec)}
                     className={`px-2.5 py-1 rounded text-xs font-semibold transition-colors ${
                       filterSector === sec
-                        ? 'bg-blue-700 text-white shadow-xs'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+                        ? 'bg-blue-500 text-white shadow-xs'
+                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-line'
                     }`}
                   >
                     {sec}
@@ -191,10 +188,10 @@ export default function EntitiesPage({ batchId }) {
       </div>
 
       {/* Entity Registry Table */}
-      <div className="bg-white border border-slate-200 rounded-lg shadow-xs overflow-hidden">
+      <div className="bg-paper border border-line rounded-lg shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-600 border-b border-slate-200 uppercase font-semibold text-[11px] tracking-wider select-none">
+            <thead className="bg-slate-50 text-slate-600 border-b border-line uppercase font-semibold text-[11px] tracking-wider select-none">
               <tr>
                 <th className="p-3.5 cursor-pointer hover:bg-slate-100" onClick={() => toggleSort('cse_id')}>
                   <div className="flex items-center gap-1.5">
@@ -232,11 +229,16 @@ export default function EntitiesPage({ batchId }) {
                 <th className="p-3.5 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-line">
               {filteredEntities.length === 0 ? (
                 <tr>
-                  <td colSpan="9" className="p-8 text-center text-slate-400 italic">
-                    No entities found matching selected criteria.
+                  <td colSpan="9" className="p-8 text-center">
+                    <div className="empty-state">
+                      <span className="empty-state-title">No entities match the current filters</span>
+                      <span className="empty-state-body">
+                        Clear or relax the risk level, sector, or search criteria above to see the full registry, or ingest a new assessment batch to populate this view.
+                      </span>
+                    </div>
                   </td>
                 </tr>
               ) : (
@@ -284,7 +286,7 @@ export default function EntitiesPage({ batchId }) {
                           <span className="w-8 font-mono font-bold text-slate-900 text-xs">
                             {score.toFixed(1)}
                           </span>
-                          <div className="w-20 bg-slate-100 rounded-full h-1.5 overflow-hidden border border-slate-200">
+                          <div className="w-20 bg-slate-100 rounded-full h-1.5 overflow-hidden border border-line">
                             <div
                               className={`h-full ${scoreBarColor}`}
                               style={{ width: `${Math.min(score, 100)}%` }}
@@ -305,7 +307,7 @@ export default function EntitiesPage({ batchId }) {
                             <span className="font-mono font-semibold text-slate-700 text-[11px] w-8">
                               {Math.round(cov)}%
                             </span>
-                            <div className="w-16 bg-slate-100 rounded-full h-1.5 overflow-hidden border border-slate-200">
+                            <div className="w-16 bg-slate-100 rounded-full h-1.5 overflow-hidden border border-line">
                               <div
                                 className={`h-full ${cov < 50 ? 'bg-rose-500' : cov < 80 ? 'bg-amber-500' : 'bg-emerald-500'}`}
                                 style={{ width: `${Math.min(cov, 100)}%` }}
@@ -322,7 +324,7 @@ export default function EntitiesPage({ batchId }) {
                         <span className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono font-bold ${
                           (entity.evidence_count || 0) > 0 
                             ? 'bg-red-50 text-red-700 border border-red-200' 
-                            : 'bg-slate-100 text-slate-600 border border-slate-200'
+                            : 'bg-slate-100 text-slate-600 border border-line'
                         }`}>
                           {entity.evidence_count ?? (entity.flag_count ?? 0)}
                         </span>
@@ -345,7 +347,7 @@ export default function EntitiesPage({ batchId }) {
                             e.stopPropagation();
                             navigate(`/entity/${entity.cse_id}`);
                           }}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-800 border border-slate-200 hover:border-blue-300 font-medium text-xs transition-colors"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-800 border border-line hover:border-blue-300 font-medium text-xs transition-colors"
                         >
                           Dossier
                           <ChevronRight className="w-3.5 h-3.5" />

@@ -1,9 +1,6 @@
-import React, { useRef, useEffect, useState, useMemo } from 'react';
+﻿import React, { useRef, useEffect, useState, useMemo } from 'react';
 import ForceGraph3D from 'react-force-graph-3d';
-import { 
-  Layers, RefreshCw, ZoomIn, ZoomOut, Info, Shield, 
-  Server, AlertTriangle, FileText, CheckCircle2, GitBranch, Eye 
-} from 'lucide-react';
+import { Layers, RefreshCw, Info, Server } from 'lucide-react';
 
 export default function AssessmentTopology3D({ 
   entityId = 'CSE-07', 
@@ -190,8 +187,8 @@ export default function AssessmentTopology3D({
   };
 
   return (
-    <div className="bg-white border border-slate-200 rounded-md p-4 shadow-sm">
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-3 border-b border-slate-100 pb-3">
+    <div className="bg-paper border border-line rounded-md p-4 shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-3 border-b border-line pb-3">
         <div className="flex items-center gap-2">
           <Layers className="w-4 h-4 text-blue-700" />
           <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900">
@@ -204,14 +201,14 @@ export default function AssessmentTopology3D({
 
         <div className="flex items-center gap-2">
           {/* Layer toggles */}
-          <div className="flex items-center gap-1 text-[11px] font-medium text-slate-600 bg-slate-50 p-1 rounded border border-slate-200">
+          <div className="flex items-center gap-1 text-[11px] font-medium text-slate-600 bg-slate-50 p-1 rounded border border-line">
             {Object.keys(visibleLayers).map(key => (
               <button
                 key={key}
                 onClick={() => setVisibleLayers(prev => ({ ...prev, [key]: !prev[key] }))}
                 className={`px-2 py-0.5 rounded capitalize text-[10px] transition-colors ${
                   visibleLayers[key] 
-                    ? 'bg-white text-slate-900 shadow-xs border border-slate-200 font-semibold' 
+                    ? 'bg-paper text-slate-900 shadow-xs border border-line font-semibold' 
                     : 'text-slate-400 hover:text-slate-700'
                 }`}
               >
@@ -223,7 +220,7 @@ export default function AssessmentTopology3D({
           {/* Camera reset */}
           <button
             onClick={handleResetCamera}
-            className="p-1.5 text-slate-500 hover:text-slate-900 border border-slate-200 rounded bg-white hover:bg-slate-50 transition-colors flex items-center gap-1 text-[11px] font-semibold"
+            className="p-1.5 text-slate-500 hover:text-slate-900 border border-line rounded bg-paper hover:bg-slate-50 transition-colors flex items-center gap-1 text-[11px] font-semibold"
             title="Reset 3D Viewpoint"
           >
             <RefreshCw className="w-3.5 h-3.5" />
@@ -236,7 +233,7 @@ export default function AssessmentTopology3D({
         {/* 3D Force Graph Canvas */}
         <div 
           ref={containerRef}
-          className="lg:col-span-3 relative border border-slate-200 rounded bg-slate-900 overflow-hidden min-h-[480px]"
+          className="lg:col-span-3 relative border border-line rounded bg-paper overflow-hidden min-h-[480px]"
         >
           <ForceGraph3D
             ref={fgRef}
@@ -257,15 +254,15 @@ export default function AssessmentTopology3D({
             warmupTicks={50}
             cooldownTicks={100}
           />
-          <div className="absolute bottom-2 left-2 text-[10px] text-slate-400 bg-slate-800/80 px-2 py-1 rounded border border-slate-700 pointer-events-none">
+          <div className="absolute bottom-2 left-2 text-[10px] text-slate-400 bg-slate-700/80 px-2 py-1 rounded border border-slate-700 pointer-events-none">
             Left Click: Rotate · Right Click: Pan · Scroll: Zoom · Click Node: Focus & Inspect
           </div>
         </div>
 
         {/* Node Inspector Drawer */}
-        <div className="bg-slate-50 border border-slate-200 rounded p-3 text-xs flex flex-col justify-between">
+        <div className="bg-slate-50 border border-line rounded p-3 text-xs flex flex-col justify-between">
           <div>
-            <div className="flex items-center gap-1.5 pb-2 mb-2 border-b border-slate-200 text-slate-700 font-semibold uppercase text-[11px]">
+            <div className="flex items-center gap-1.5 pb-2 mb-2 border-b border-line text-slate-700 font-semibold uppercase text-[11px]">
               <Info className="w-3.5 h-3.5 text-blue-700" />
               Evidence Inspector
             </div>
@@ -278,7 +275,7 @@ export default function AssessmentTopology3D({
                 </div>
                 <div>
                   <span className="text-slate-400 block text-[10px] uppercase">Layer Classification</span>
-                  <span className="inline-block px-2 py-0.5 rounded bg-white border border-slate-200 font-semibold uppercase text-[10px] text-slate-800 mt-0.5">
+                  <span className="inline-block px-2 py-0.5 rounded bg-paper border border-line font-semibold uppercase text-[10px] text-slate-800 mt-0.5">
                     {selectedNode.group}
                   </span>
                 </div>
@@ -286,7 +283,7 @@ export default function AssessmentTopology3D({
                   <span className="text-slate-400 block text-[10px] uppercase">Operational Context</span>
                   <p className="text-slate-700 text-[11px] mt-0.5">{selectedNode.sub || 'Grounded evidence entity'}</p>
                 </div>
-                <div className="pt-2 border-t border-slate-200">
+                <div className="pt-2 border-t border-line">
                   <span className="text-slate-400 block text-[10px] uppercase">Supervisory Integrity</span>
                   <p className="text-slate-600 text-[11px]">All connected assets and findings are verified against local DB records without external reliance.</p>
                 </div>
@@ -299,9 +296,9 @@ export default function AssessmentTopology3D({
             )}
           </div>
 
-          <div className="mt-4 pt-2 border-t border-slate-200 text-[10px] text-slate-500 space-y-1">
+          <div className="mt-4 pt-2 border-t border-line text-[10px] text-slate-500 space-y-1">
             <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-blue-700 inline-block"></span>
+              <span className="w-2 h-2 rounded-full bg-blue-500 inline-block"></span>
               <span>Entity Node</span>
               <span className="w-2 h-2 rounded-full bg-red-600 inline-block ml-2"></span>
               <span>Critical Asset / Finding</span>

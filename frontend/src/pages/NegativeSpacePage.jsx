@@ -1,9 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+﻿import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  EyeOff, Search, Filter, ShieldAlert, ArrowRight, 
-  ExternalLink, Layers, CheckCircle2, AlertTriangle 
-} from 'lucide-react';
+import { EyeOff, Search, Filter, ArrowRight, ExternalLink } from 'lucide-react';
 import { getNegativeSpace } from '../api';
 import RiskBadge from '../components/RiskBadge';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -73,10 +70,10 @@ export default function NegativeSpacePage({ batchId }) {
   if (loading) return <LoadingSpinner message="Detecting operational blind spots and negative space..." />;
 
   return (
-    <div className="max-w-[1700px] mx-auto p-6 space-y-6">
+    <div className="max-w-[1600px] mx-auto px-6 py-5 space-y-5">
       
       {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-line pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-purple-700 uppercase tracking-wider mb-1">
             <EyeOff className="w-4 h-4" />
@@ -104,25 +101,25 @@ export default function NegativeSpacePage({ batchId }) {
 
       {/* KPI Overview Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+        <div className="bg-paper border border-line rounded-lg p-4 shadow-xs">
           <div className="text-[11px] font-semibold uppercase text-slate-500 tracking-wider">Total Blind Spots</div>
           <div className="text-2xl font-bold font-mono text-slate-900 mt-1">{stats.total}</div>
           <div className="text-[11px] text-slate-400 mt-0.5">Absence indicators recorded</div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+        <div className="bg-paper border border-line rounded-lg p-4 shadow-xs">
           <div className="text-[11px] font-semibold uppercase text-purple-600 tracking-wider">Silent Assets</div>
           <div className="text-2xl font-bold font-mono text-purple-700 mt-1">{stats.missingTelemetry}</div>
           <div className="text-[11px] text-slate-400 mt-0.5">Critical servers with 0 telemetry</div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+        <div className="bg-paper border border-line rounded-lg p-4 shadow-xs">
           <div className="text-[11px] font-semibold uppercase text-rose-600 tracking-wider">Omitted Categories</div>
           <div className="text-2xl font-bold font-mono text-rose-700 mt-1">{stats.missingCat}</div>
           <div className="text-[11px] text-slate-400 mt-0.5">Entire alert classes missing</div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+        <div className="bg-paper border border-line rounded-lg p-4 shadow-xs">
           <div className="text-[11px] font-semibold uppercase text-amber-600 tracking-wider">Suppressed Escalation</div>
           <div className="text-2xl font-bold font-mono text-amber-700 mt-1">{stats.missingEsc}</div>
           <div className="text-[11px] text-slate-400 mt-0.5">High/critical without escalation</div>
@@ -130,7 +127,7 @@ export default function NegativeSpacePage({ batchId }) {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs space-y-3">
+      <div className="bg-paper border border-line rounded-lg p-4 shadow-xs space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-4">
           
           <div className="relative flex-1 min-w-[260px] max-w-md">
@@ -140,7 +137,7 @@ export default function NegativeSpacePage({ batchId }) {
               placeholder="Search by CSE ID, asset identifier, description..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded focus:bg-white focus:border-purple-500 focus:outline-none transition-colors"
+              className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-line rounded focus:bg-slate-100 focus:border-purple-500 focus:outline-none transition-colors"
             />
           </div>
 
@@ -158,7 +155,7 @@ export default function NegativeSpacePage({ batchId }) {
                 className={`px-2.5 py-1 rounded font-semibold text-xs transition-colors ${
                   typeFilter === t.id
                     ? 'bg-purple-700 text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-line'
                 }`}
               >
                 {t.label}
@@ -175,7 +172,7 @@ export default function NegativeSpacePage({ batchId }) {
                 className={`px-2.5 py-1 rounded font-semibold text-xs transition-colors ${
                   severityFilter === sev
                     ? 'bg-purple-700 text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-line'
                 }`}
               >
                 {sev}
@@ -189,16 +186,21 @@ export default function NegativeSpacePage({ batchId }) {
       {/* Negative Space Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {filteredFindings.length === 0 ? (
-          <div className="col-span-full p-12 text-center bg-white border border-slate-200 rounded-lg text-slate-400 italic">
-            No negative space findings matching selected filter criteria.
-          </div>
+          <div className="col-span-full p-10 text-center bg-paper border border-line rounded-md">
+                <div className="empty-state">
+                  <span className="empty-state-title">No negative-space findings match the selected filters</span>
+                  <span className="empty-state-body">
+                    Relax the filters above, or ingest and analyse an additional batch so dormant periods, severity inversions, and silent assets can be detected here.
+                  </span>
+                </div>
+              </div>
         ) : (
           filteredFindings.map((f, idx) => {
             const fType = f.finding_type || f.type;
             return (
               <div
                 key={idx}
-                className="bg-white border border-slate-200 hover:border-purple-300 rounded-lg p-5 shadow-xs transition-all flex flex-col justify-between"
+                className="bg-paper border border-line hover:border-purple-300 rounded-lg p-5 shadow-xs transition-all flex flex-col justify-between"
               >
                 <div>
                   {/* Top Bar */}
@@ -212,7 +214,7 @@ export default function NegativeSpacePage({ batchId }) {
                         <ExternalLink className="w-3 h-3 text-slate-400" />
                       </button>
                       {f.asset_id && (
-                        <span className="font-mono text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
+                        <span className="font-mono text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-line">
                           {f.asset_id}
                         </span>
                       )}
@@ -233,7 +235,7 @@ export default function NegativeSpacePage({ batchId }) {
                   </p>
 
                   {/* Expected vs Observed Structured Comparison */}
-                  <div className="bg-slate-50 border border-slate-200 rounded p-3 text-xs space-y-2 mb-4">
+                  <div className="bg-slate-50 border border-line rounded p-3 text-xs space-y-2 mb-4">
                     <div>
                       <span className="text-[10px] font-bold uppercase text-emerald-700 tracking-wider block mb-0.5">
                         Supervisory Baseline (Expected)
@@ -243,7 +245,7 @@ export default function NegativeSpacePage({ batchId }) {
                       </p>
                     </div>
 
-                    <div className="border-t border-slate-200 pt-1.5">
+                    <div className="border-t border-line pt-1.5">
                       <span className="text-[10px] font-bold uppercase text-rose-700 tracking-wider block mb-0.5">
                         Recorded Evidence (Observed)
                       </span>
@@ -253,7 +255,7 @@ export default function NegativeSpacePage({ batchId }) {
                     </div>
 
                     {f.gap && (
-                      <div className="border-t border-slate-200 pt-1.5 text-[11px] text-slate-600">
+                      <div className="border-t border-line pt-1.5 text-[11px] text-slate-600">
                         <span className="font-semibold text-slate-700">Gap Impact: </span>
                         {f.gap}
                       </div>
@@ -262,7 +264,7 @@ export default function NegativeSpacePage({ batchId }) {
                 </div>
 
                 {/* Footer Context */}
-                <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                <div className="pt-2 border-t border-line flex items-center justify-between text-[11px]">
                   <span className="text-slate-500 font-mono text-[10px] truncate max-w-[200px]" title={f.peer_context}>
                     {f.peer_context || 'Evidence Strength: HIGH'}
                   </span>

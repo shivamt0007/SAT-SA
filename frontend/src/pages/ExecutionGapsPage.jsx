@@ -1,9 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+﻿import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  GitBranch, Search, Filter, AlertTriangle, Clock, 
-  FileText, Link2, ExternalLink, ChevronDown, ChevronUp, ArrowRight 
-} from 'lucide-react';
+import { GitBranch, Search, ExternalLink, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 import { getExecutionGaps } from '../api';
 import RiskBadge from '../components/RiskBadge';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -84,10 +81,10 @@ export default function ExecutionGapsPage({ batchId }) {
   ];
 
   return (
-    <div className="max-w-[1700px] mx-auto p-6 space-y-6">
+    <div className="max-w-[1600px] mx-auto px-6 py-5 space-y-5">
       
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-line pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-amber-700 uppercase tracking-wider mb-1">
             <GitBranch className="w-4 h-4" />
@@ -115,25 +112,25 @@ export default function ExecutionGapsPage({ batchId }) {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+        <div className="bg-paper border border-line rounded-lg p-4 shadow-xs">
           <div className="text-[11px] font-semibold uppercase text-slate-500 tracking-wider">Total Gaps</div>
           <div className="text-2xl font-bold font-mono text-slate-900 mt-1">{stats.total}</div>
           <div className="text-[11px] text-slate-400 mt-0.5">Rule-grounded execution flags</div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+        <div className="bg-paper border border-line rounded-lg p-4 shadow-xs">
           <div className="text-[11px] font-semibold uppercase text-rose-600 tracking-wider">Rapid Closures (&lt;8m)</div>
           <div className="text-2xl font-bold font-mono text-rose-700 mt-1">{stats.rapidClosures}</div>
           <div className="text-[11px] text-slate-400 mt-0.5">Critical dwell time violations</div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+        <div className="bg-paper border border-line rounded-lg p-4 shadow-xs">
           <div className="text-[11px] font-semibold uppercase text-amber-600 tracking-wider">Unlinked Critical Alerts</div>
           <div className="text-2xl font-bold font-mono text-amber-700 mt-1">{stats.unlinkedAlerts}</div>
           <div className="text-[11px] text-slate-400 mt-0.5">Closed without case ticket</div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+        <div className="bg-paper border border-line rounded-lg p-4 shadow-xs">
           <div className="text-[11px] font-semibold uppercase text-blue-600 tracking-wider">Templated Notes</div>
           <div className="text-2xl font-bold font-mono text-blue-700 mt-1">{stats.templatedNotes}</div>
           <div className="text-[11px] text-slate-400 mt-0.5">Similarity &ge; 60% across cases</div>
@@ -141,7 +138,7 @@ export default function ExecutionGapsPage({ batchId }) {
       </div>
 
       {/* Filters and Search Bar */}
-      <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs space-y-3">
+      <div className="bg-paper border border-line rounded-lg p-4 shadow-xs space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-4">
           
           <div className="relative flex-1 min-w-[260px] max-w-md">
@@ -151,7 +148,7 @@ export default function ExecutionGapsPage({ batchId }) {
               placeholder="Search by CSE ID, rule ID, gap description..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded focus:bg-white focus:border-amber-500 focus:outline-none transition-colors"
+              className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-line rounded focus:bg-slate-100 focus:border-amber-500 focus:outline-none transition-colors"
             />
           </div>
 
@@ -164,7 +161,7 @@ export default function ExecutionGapsPage({ batchId }) {
                 className={`px-2.5 py-1 rounded font-semibold text-xs transition-colors ${
                   stageFilter === st.id
                     ? 'bg-amber-700 text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-line'
                 }`}
               >
                 {st.label}
@@ -181,7 +178,7 @@ export default function ExecutionGapsPage({ batchId }) {
                 className={`px-2.5 py-1 rounded font-semibold text-xs transition-colors ${
                   severityFilter === sev
                     ? 'bg-amber-700 text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-line'
                 }`}
               >
                 {sev}
@@ -195,8 +192,13 @@ export default function ExecutionGapsPage({ batchId }) {
       {/* Execution Gaps List / Cards */}
       <div className="space-y-4">
         {filteredGaps.length === 0 ? (
-          <div className="p-12 text-center bg-white border border-slate-200 rounded-lg text-slate-400 italic">
-            No execution gaps match the selected criteria.
+          <div className="p-10 text-center bg-paper border border-line rounded-md">
+            <div className="empty-state">
+              <span className="empty-state-title">No execution gaps match the selected criteria</span>
+              <span className="empty-state-body">
+                Widen entity or rule filters, or ingest and analyse a new batch so metric-violation gaps are surfaced here.
+              </span>
+            </div>
           </div>
         ) : (
           filteredGaps.map((g) => {
@@ -206,7 +208,7 @@ export default function ExecutionGapsPage({ batchId }) {
             return (
               <div
                 key={g.id}
-                className="bg-white border border-slate-200 rounded-lg p-5 shadow-xs transition-all hover:border-amber-300"
+                className="bg-paper border border-line rounded-lg p-5 shadow-xs transition-all hover:border-amber-300"
               >
                 {/* Header Row */}
                 <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
@@ -218,7 +220,7 @@ export default function ExecutionGapsPage({ batchId }) {
                       {g.cse_id}
                       <ExternalLink className="w-3 h-3 text-slate-400" />
                     </button>
-                    <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-800 border border-slate-200">
+                    <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-800 border border-line">
                       {g.rule_id}
                     </span>
                     <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-amber-50 text-amber-800 border border-amber-200">
@@ -243,7 +245,7 @@ export default function ExecutionGapsPage({ batchId }) {
                 </p>
 
                 {/* Structured Process Comparison Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-slate-50 border border-slate-200 rounded p-3 text-xs mb-3">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-slate-50 border border-line rounded p-3 text-xs mb-3">
                   <div>
                     <span className="text-[10px] font-bold uppercase text-emerald-700 tracking-wider block mb-1">
                       Expected Process Baseline
@@ -273,7 +275,7 @@ export default function ExecutionGapsPage({ batchId }) {
                 </div>
 
                 {/* Footer and Cited Evidence Toggle */}
-                <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
+                <div className="flex items-center justify-between pt-2 border-t border-line text-xs">
                   <button
                     onClick={() => setExpandedId(isExpanded ? null : g.id)}
                     className="inline-flex items-center gap-1.5 text-slate-700 hover:text-slate-900 font-semibold text-[11px]"
@@ -293,7 +295,7 @@ export default function ExecutionGapsPage({ batchId }) {
 
                 {/* Expanded Cited Evidence Box */}
                 {isExpanded && (
-                  <div className="mt-3 pt-3 border-t border-slate-200 animate-in fade-in-50">
+                  <div className="mt-3 pt-3 border-t border-line animate-in fade-in-50">
                     <div className="text-[10px] font-bold uppercase text-slate-500 tracking-wider mb-2">
                       Cited Alert and Case Record Identifiers:
                     </div>
@@ -302,11 +304,11 @@ export default function ExecutionGapsPage({ batchId }) {
                         Aggregate entity-level metric threshold violation.
                       </div>
                     ) : (
-                      <div className="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto p-2 bg-slate-50 border border-slate-200 rounded">
+                      <div className="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto p-2 bg-slate-50 border border-line rounded">
                         {evList.map((id, i) => (
                           <span
                             key={i}
-                            className="font-mono text-[11px] px-2 py-0.5 rounded bg-white text-slate-800 border border-slate-200 font-medium"
+                            className="font-mono text-[11px] px-2 py-0.5 rounded bg-paper text-slate-800 border border-line font-medium"
                           >
                             {id}
                           </span>

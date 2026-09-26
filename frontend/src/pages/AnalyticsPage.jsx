@@ -1,18 +1,12 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  BarChart2, Layers, Cpu, Activity, Clock, 
-  TrendingUp, Shield, ExternalLink, CheckCircle2, AlertTriangle, Eye 
-} from 'lucide-react';
+import { BarChart2, Layers, Activity } from 'lucide-react';
 import { getAnalyticsSummary, getSystemicPatterns } from '../api';
 import RiskBadge from '../components/RiskBadge';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorBanner from '../components/ErrorBanner';
 import AssessmentTopology3D from '../components/AssessmentTopology3D';
-import { 
-  BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip, 
-  ResponsiveContainer, CartesianGrid, Cell 
-} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts';
 
 export default function AnalyticsPage({ batchId }) {
   const [data, setData] = useState(null);
@@ -75,10 +69,10 @@ export default function AnalyticsPage({ batchId }) {
   }));
 
   return (
-    <div className="max-w-[1700px] mx-auto p-6 space-y-6">
+    <div className="max-w-[1600px] mx-auto px-6 py-5 space-y-5">
       
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-line pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-blue-700 uppercase tracking-wider mb-1">
             <BarChart2 className="w-4 h-4" />
@@ -93,12 +87,12 @@ export default function AnalyticsPage({ batchId }) {
         </div>
 
         {/* View Switcher: Analytical Metrics vs 3D Topology */}
-        <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-lg border border-slate-200">
+        <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-lg border border-line">
           <button
             onClick={() => setActiveView('analytics')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold transition-colors ${
               activeView === 'analytics'
-                ? 'bg-white text-blue-800 shadow-xs'
+                ? 'bg-paper text-brand-800 shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -109,7 +103,7 @@ export default function AnalyticsPage({ batchId }) {
             onClick={() => setActiveView('topology')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold transition-colors ${
               activeView === 'topology'
-                ? 'bg-white text-blue-800 shadow-xs'
+                ? 'bg-paper text-brand-800 shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -122,7 +116,7 @@ export default function AnalyticsPage({ batchId }) {
       {/* TOPOLOGY VIEW */}
       {activeView === 'topology' && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between bg-white border border-slate-200 rounded-md p-3 shadow-2xs">
+          <div className="flex items-center justify-between bg-paper border border-line rounded-md p-3 shadow-2xs">
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
                 Select Critical Sector Entity for 3D Topology:
@@ -130,7 +124,7 @@ export default function AnalyticsPage({ batchId }) {
               <select
                 value={selectedEntityId}
                 onChange={(e) => setSelectedEntityId(e.target.value)}
-                className="px-2.5 py-1 text-xs font-mono font-bold bg-slate-50 border border-slate-200 rounded text-blue-900 focus:bg-white focus:outline-none"
+                className="px-2.5 py-1 text-xs font-mono font-bold bg-slate-50 border border-line rounded text-blue-900 focus:bg-slate-100 focus:outline-none"
               >
                 {entities.map(e => (
                   <option key={e.cse_id} value={e.cse_id}>
@@ -160,7 +154,7 @@ export default function AnalyticsPage({ batchId }) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             
             {/* Supervisory Coverage Leaderboard */}
-            <div className="bg-white border border-slate-200 rounded-lg p-5 shadow-xs">
+            <div className="bg-paper border border-line rounded-lg p-5 shadow-xs">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-xs font-bold uppercase text-slate-700 tracking-wider">
                   Supervisory Coverage Scores by Entity
@@ -185,7 +179,7 @@ export default function AnalyticsPage({ batchId }) {
                       {coverageData.map((entry, idx) => (
                         <Cell 
                           key={`cov-${idx}`} 
-                          fill={entry.coverage < 50 ? '#ef4444' : entry.coverage < 80 ? '#f59e0b' : '#10b981'} 
+                          fill={entry.coverage < 50 ? '#B65D5D' : entry.coverage < 80 ? '#B88A43' : '#4D8A68'} 
                         />
                       ))}
                     </Bar>
@@ -195,7 +189,7 @@ export default function AnalyticsPage({ batchId }) {
             </div>
 
             {/* Aggregate 24-Hour SOC Activity Heatmap / Profile */}
-            <div className="bg-white border border-slate-200 rounded-lg p-5 shadow-xs">
+            <div className="bg-paper border border-line rounded-lg p-5 shadow-xs">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-xs font-bold uppercase text-slate-700 tracking-wider">
                   24-Hour Ingestion & Alert Temporal Profile
@@ -216,7 +210,7 @@ export default function AnalyticsPage({ batchId }) {
                       contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', borderRadius: '6px', fontSize: '11px' }}
                       formatter={(val) => [val, 'Total Alerts']}
                     />
-                    <Bar dataKey="alerts" fill="#3b82f6" radius={[2, 2, 0, 0]} />
+                    <Bar dataKey="alerts" fill="#557C91" radius={[2, 2, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -225,8 +219,8 @@ export default function AnalyticsPage({ batchId }) {
           </div>
 
           {/* Process Completeness Matrix Across All Monitored CSEs */}
-          <div className="bg-white border border-slate-200 rounded-lg shadow-xs overflow-hidden">
-            <div className="p-4 border-b border-slate-200 bg-slate-50/50">
+          <div className="bg-paper border border-line rounded-lg shadow-xs overflow-hidden">
+            <div className="p-4 border-b border-line bg-slate-50/50">
               <h3 className="text-xs font-bold uppercase text-slate-700 tracking-wider">
                 5-Stage SOC Process Completeness Matrix
               </h3>
@@ -237,7 +231,7 @@ export default function AnalyticsPage({ batchId }) {
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-50 text-slate-600 border-b border-slate-200 font-semibold text-[11px] uppercase tracking-wider">
+                <thead className="bg-slate-50 text-slate-600 border-b border-line font-semibold text-[11px] uppercase tracking-wider">
                   <tr>
                     <th className="p-3.5">CSE ID</th>
                     <th className="p-3.5">Sector</th>
@@ -250,7 +244,7 @@ export default function AnalyticsPage({ batchId }) {
                     <th className="p-3.5 text-right">Dossier</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-line">
                   {entities.map((e) => {
                     const pc = e.process_completeness || {};
                     const s1 = pc.ingestion || (e.alert_count > 0 ? 'ACTIVE' : 'SILENT');

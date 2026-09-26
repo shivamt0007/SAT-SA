@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Database, Search, Filter, Download, ArrowLeft, 
-  ArrowRight, Clock, Shield, ExternalLink, RefreshCw 
-} from 'lucide-react';
+import { Database, Search, Filter, Download, ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
 import { getEvidence, getEntities } from '../api';
 import RiskBadge from '../components/RiskBadge';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -95,10 +92,10 @@ export default function EvidencePage({ batchId }) {
   const currentPage = Math.floor(offset / limit) + 1;
 
   return (
-    <div className="max-w-[1700px] mx-auto p-6 space-y-6">
+    <div className="max-w-[1600px] mx-auto px-6 py-5 space-y-5">
       
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-line pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-blue-700 uppercase tracking-wider mb-1">
             <Database className="w-4 h-4" />
@@ -115,7 +112,7 @@ export default function EvidencePage({ batchId }) {
         <div className="flex items-center gap-3">
           <button
             onClick={handleExportCSV}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors shadow-xs"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold bg-paper border border-line text-slate-700 hover:bg-slate-50 transition-colors shadow-xs"
           >
             <Download className="w-3.5 h-3.5 text-slate-500" />
             Export Audit CSV
@@ -126,7 +123,7 @@ export default function EvidencePage({ batchId }) {
       {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
 
       {/* Filter and Search Bar */}
-      <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs space-y-3">
+      <div className="bg-paper border border-line rounded-lg p-4 shadow-xs space-y-3">
         <form onSubmit={handleSearchSubmit} className="flex flex-wrap items-center justify-between gap-4">
           
           {/* Search Input */}
@@ -137,7 +134,7 @@ export default function EvidencePage({ batchId }) {
               placeholder="Search by Alert ID, Case ID, or Asset..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded focus:bg-white focus:border-blue-500 focus:outline-none transition-colors"
+              className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-line rounded focus:bg-slate-100 focus:border-brand-800 focus:outline-none transition-colors"
             />
           </div>
 
@@ -147,7 +144,7 @@ export default function EvidencePage({ batchId }) {
             <select
               value={selectedEntity}
               onChange={(e) => setSelectedEntity(e.target.value)}
-              className="px-2.5 py-1.5 rounded text-xs bg-slate-50 border border-slate-200 focus:bg-white focus:outline-none font-mono"
+              className="px-2.5 py-1.5 rounded text-xs bg-slate-50 border border-line focus:bg-slate-100 focus:outline-none font-mono"
             >
               <option value="">All Entities ({entities.length})</option>
               {entities.map((e) => (
@@ -168,8 +165,8 @@ export default function EvidencePage({ batchId }) {
                 onClick={() => setSelectedSeverity(sev)}
                 className={`px-2.5 py-1 rounded font-semibold text-xs transition-colors ${
                   selectedSeverity === sev
-                    ? 'bg-blue-700 text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+                    ? 'bg-blue-500 text-white shadow-xs'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-line'
                 }`}
               >
                 {sev || 'ALL'}
@@ -179,7 +176,7 @@ export default function EvidencePage({ batchId }) {
 
           <button
             type="submit"
-            className="px-3 py-1.5 rounded text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 transition-colors"
+            className="px-3 py-1.5 rounded text-xs font-semibold bg-paper text-white hover:bg-slate-700 transition-colors"
           >
             Apply Query
           </button>
@@ -187,7 +184,7 @@ export default function EvidencePage({ batchId }) {
       </div>
 
       {/* Evidence Table */}
-      <div className="bg-white border border-slate-200 rounded-lg shadow-xs overflow-hidden">
+      <div className="bg-paper border border-line rounded-lg shadow-xs overflow-hidden">
         {loading ? (
           <div className="p-12">
             <LoadingSpinner message="Querying grounded evidence records..." />
@@ -195,7 +192,7 @@ export default function EvidencePage({ batchId }) {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50 text-slate-600 border-b border-slate-200 uppercase font-semibold text-[11px] tracking-wider select-none">
+              <thead className="bg-slate-50 text-slate-600 border-b border-line uppercase font-semibold text-[11px] tracking-wider select-none">
                 <tr>
                   <th className="p-3.5">Alert Identifier</th>
                   <th className="p-3.5">Entity</th>
@@ -208,11 +205,16 @@ export default function EvidencePage({ batchId }) {
                   <th className="p-3.5 text-right">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-line">
                 {evidenceData.items.length === 0 ? (
                   <tr>
-                    <td colSpan="9" className="p-8 text-center text-slate-400 italic">
-                      No operational evidence records match the selected query.
+                    <td colSpan="9" className="p-8 text-center">
+                      <div className="empty-state">
+                        <span className="empty-state-title">No operational evidence for the selected query</span>
+                        <span className="empty-state-body">
+                          Widen the date range or clear filters, or <span className="font-semibold text-blue-700">ingest a new batch</span> so alert and case telemetry appears here.
+                        </span>
+                      </div>
                     </td>
                   </tr>
                 ) : (
@@ -276,7 +278,7 @@ export default function EvidencePage({ batchId }) {
                         {/* Linked Case */}
                         <td className="p-3.5">
                           {item.case_id ? (
-                            <span className="font-mono text-[11px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
+                            <span className="font-mono text-[11px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 border border-line">
                               {item.case_id}
                             </span>
                           ) : (
@@ -311,7 +313,7 @@ export default function EvidencePage({ batchId }) {
         )}
 
         {/* Pagination Bar */}
-        <div className="p-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between text-xs text-slate-600">
+        <div className="p-4 border-t border-line bg-slate-50 flex items-center justify-between text-xs text-slate-600">
           <div>
             Showing <strong>{evidenceData.items.length > 0 ? offset + 1 : 0}</strong> to{' '}
             <strong>{Math.min(offset + limit, evidenceData.total || 0)}</strong> of{' '}
@@ -322,7 +324,7 @@ export default function EvidencePage({ batchId }) {
             <button
               disabled={offset === 0 || loading}
               onClick={() => fetchEvidence(Math.max(offset - limit, 0))}
-              className="flex items-center gap-1 px-3 py-1.5 rounded bg-white border border-slate-200 hover:bg-slate-50 disabled:opacity-50 font-semibold text-slate-700"
+              className="flex items-center gap-1 px-3 py-1.5 rounded bg-paper border border-line hover:bg-slate-50 disabled:opacity-50 font-semibold text-slate-700"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               Previous
@@ -335,7 +337,7 @@ export default function EvidencePage({ batchId }) {
             <button
               disabled={offset + limit >= (evidenceData.total || 0) || loading}
               onClick={() => fetchEvidence(offset + limit)}
-              className="flex items-center gap-1 px-3 py-1.5 rounded bg-white border border-slate-200 hover:bg-slate-50 disabled:opacity-50 font-semibold text-slate-700"
+              className="flex items-center gap-1 px-3 py-1.5 rounded bg-paper border border-line hover:bg-slate-50 disabled:opacity-50 font-semibold text-slate-700"
             >
               Next
               <ArrowRight className="w-3.5 h-3.5" />

@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Sliders, Plus, Trash2, CheckCircle2, XCircle, AlertTriangle, 
-  ShieldCheck, ArrowRight, Zap, Info, Check 
-} from 'lucide-react';
+﻿import React, { useState, useEffect } from 'react';
+import { Sliders, Plus, Trash2, ShieldCheck, Check } from 'lucide-react';
 import { getTriagePolicies, createTriagePolicy, updateTriagePolicy, deleteTriagePolicy } from '../api';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorBanner from '../components/ErrorBanner';
@@ -106,18 +103,18 @@ export default function TriagePoliciesPage() {
   if (loading) return <LoadingSpinner message="Loading automated triage policies..." />;
 
   return (
-    <div className="max-w-[1500px] mx-auto p-6 space-y-6 pb-20">
+    <div className="max-w-[1400px] mx-auto px-6 py-5 space-y-5 pb-16">
       
       {/* Toast */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-emerald-700 text-white px-4 py-2.5 rounded-lg shadow-lg flex items-center gap-2 text-xs font-semibold animate-in fade-in">
+        <div className="fixed bottom-6 right-6 z-50 bg-emerald-600 text-white px-4 py-2.5 rounded-lg shadow-lg flex items-center gap-2 text-xs font-semibold animate-in fade-in">
           <Check className="w-4 h-4" />
           {toastMessage}
         </div>
       )}
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-line pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-blue-700 uppercase tracking-wider mb-1">
             <Sliders className="w-4 h-4" />
@@ -134,7 +131,7 @@ export default function TriagePoliciesPage() {
 
         <button
           onClick={() => setShowAddModal(true)}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold bg-blue-700 hover:bg-blue-800 text-white shadow-xs transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold bg-blue-500 hover:bg-blue-600 text-white shadow-xs transition-colors"
         >
           <Plus className="w-3.5 h-3.5" />
           Create Triage Policy
@@ -144,7 +141,7 @@ export default function TriagePoliciesPage() {
       {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
 
       {/* Human-in-the-loop Assurance Banner */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-xs text-blue-900 flex items-start gap-3">
+      <div className="bg-blue-50/60 border border-blue-200 rounded-md p-3.5 text-xs text-blue-900 flex items-start gap-3">
         <ShieldCheck className="w-5 h-5 text-blue-700 shrink-0 mt-0.5" />
         <div className="space-y-1">
           <span className="font-bold uppercase tracking-wider text-[11px] block">
@@ -157,8 +154,8 @@ export default function TriagePoliciesPage() {
       </div>
 
       {/* Policies Table */}
-      <div className="bg-white border border-slate-200 rounded-lg shadow-xs overflow-hidden">
-        <div className="px-4 py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+      <div className="bg-paper border border-line rounded-md overflow-hidden">
+        <div className="px-4 py-3 bg-slate-50 border-b border-line flex items-center justify-between">
           <div className="text-xs font-bold uppercase tracking-wider text-slate-700">
             Configured Supervisory Triage Policies ({policies.length})
           </div>
@@ -169,7 +166,7 @@ export default function TriagePoliciesPage() {
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-600 border-b border-slate-200 uppercase font-semibold text-[11px] tracking-wider select-none">
+            <thead className="bg-slate-100/70 text-slate-600 border-b border-line uppercase font-semibold text-[10.5px] tracking-wider select-none">
               <tr>
                 <th className="p-3 w-14 text-center">Active</th>
                 <th className="p-3">Policy Name</th>
@@ -179,11 +176,17 @@ export default function TriagePoliciesPage() {
                 <th className="p-3 text-right">Delete</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-line">
               {policies.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="p-8 text-center text-slate-400 italic">
-                    No triage policies configured. Default policies will be created automatically on next assessment.
+                  <td colSpan="6" className="p-8 text-center">
+                    <div className="empty-state">
+                      <Sliders className="w-6 h-6 text-slate-400" strokeWidth={1.5} />
+                      <span className="empty-state-title">No triage policies configured yet</span>
+                      <span className="empty-state-body">
+                        Create your first IF-THEN triage rule with <span className="font-semibold text-blue-700">Create Triage Policy</span> above, or run a new assessment to auto-generate default policies.
+                      </span>
+                    </div>
                   </td>
                 </tr>
               ) : (
@@ -198,7 +201,7 @@ export default function TriagePoliciesPage() {
                           pol.is_active ? 'bg-emerald-600 justify-end' : 'bg-slate-300 justify-start'
                         }`}
                       >
-                        <div className="bg-white w-3 h-3 rounded-full shadow-md" />
+                        <div className="bg-paper w-3 h-3 rounded-full shadow-md" />
                       </button>
                     </td>
 
@@ -209,7 +212,7 @@ export default function TriagePoliciesPage() {
 
                     {/* Rule */}
                     <td className="p-3">
-                      <span className="font-mono font-bold text-[11px] px-2 py-0.5 rounded bg-slate-100 text-slate-800 border border-slate-200">
+                      <span className="font-mono font-bold text-[11px] px-2 py-0.5 rounded bg-slate-100 text-slate-800 border border-line">
                         {pol.target_rule || 'ALL RULES'}
                       </span>
                     </td>
@@ -244,9 +247,9 @@ export default function TriagePoliciesPage() {
 
       {/* Create Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <form onSubmit={handleCreatePolicy} className="bg-white rounded-lg border border-slate-200 shadow-xl max-w-md w-full p-6 space-y-4 animate-in zoom-in-95">
-            <div className="flex items-start justify-between border-b border-slate-100 pb-3">
+        <div className="fixed inset-0 z-50 bg-ink/45 flex items-center justify-center p-4">
+          <form onSubmit={handleCreatePolicy} className="bg-paper rounded-md border border-line shadow-lg max-w-md w-full p-5 space-y-4">
+            <div className="flex items-start justify-between border-b border-line pb-3">
               <div>
                 <div className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">
                   New Automated Rule
@@ -275,7 +278,7 @@ export default function TriagePoliciesPage() {
                   value={policyName}
                   onChange={(e) => setPolicyName(e.target.value)}
                   placeholder="e.g. Escalate Chronic Suppressions"
-                  className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded focus:bg-white focus:border-blue-500 focus:outline-none"
+                  className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-line rounded focus:bg-slate-100 focus:border-brand-800 focus:outline-none"
                 />
               </div>
 
@@ -287,7 +290,7 @@ export default function TriagePoliciesPage() {
                   <select
                     value={ruleTarget}
                     onChange={(e) => setRuleTarget(e.target.value)}
-                    className="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded focus:bg-white focus:outline-none font-mono"
+                    className="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-line rounded focus:bg-slate-100 focus:outline-none font-mono"
                   >
                     <option value="ALL">ALL RULES</option>
                     <option value="R-01">R-01 (Rapid Closure)</option>
@@ -308,7 +311,7 @@ export default function TriagePoliciesPage() {
                   <select
                     value={conditionType}
                     onChange={(e) => setConditionType(e.target.value)}
-                    className="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded focus:bg-white focus:outline-none font-mono"
+                    className="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-line rounded focus:bg-slate-100 focus:outline-none font-mono"
                   >
                     <option value="RULE_MATCH">RULE_MATCH</option>
                     <option value="CHRONIC">CHRONIC (Recurring)</option>
@@ -327,7 +330,7 @@ export default function TriagePoliciesPage() {
                   value={conditionValue}
                   onChange={(e) => setConditionValue(e.target.value)}
                   placeholder="e.g. CRITICAL or threshold parameter"
-                  className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded focus:bg-white focus:border-blue-500 focus:outline-none"
+                  className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-line rounded focus:bg-slate-100 focus:border-brand-800 focus:outline-none"
                 />
               </div>
 
@@ -338,7 +341,7 @@ export default function TriagePoliciesPage() {
                 <select
                   value={actionType}
                   onChange={(e) => setActionType(e.target.value)}
-                  className="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded focus:bg-white focus:outline-none font-semibold text-blue-900"
+                  className="w-full px-2.5 py-1.5 text-xs bg-slate-50 border border-line rounded focus:bg-slate-100 focus:outline-none font-semibold text-blue-900"
                 >
                   <option value="AUTO_ACKNOWLEDGE">AUTO_ACKNOWLEDGE (Tag for supervisory awareness)</option>
                   <option value="AUTO_FALSE_POSITIVE">AUTO_FALSE_POSITIVE (Preset status to False Positive)</option>
@@ -347,18 +350,18 @@ export default function TriagePoliciesPage() {
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+            <div className="flex items-center justify-end gap-2 pt-3 border-t border-line">
               <button
                 type="button"
                 onClick={() => setShowAddModal(false)}
-                className="px-3 py-1.5 rounded text-xs font-semibold text-slate-600 hover:bg-slate-100 border border-slate-200 transition-colors"
+                className="px-3 py-1.5 rounded text-xs font-semibold text-slate-600 hover:bg-slate-100 border border-line transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={creating}
-                className="px-4 py-1.5 rounded text-xs font-semibold bg-blue-700 hover:bg-blue-800 text-white transition-colors disabled:opacity-50 flex items-center gap-1.5"
+                className="px-4 py-1.5 rounded text-xs font-semibold bg-blue-500 hover:bg-blue-600 text-white transition-colors disabled:opacity-50 flex items-center gap-1.5"
               >
                 {creating ? 'Creating...' : 'Save Policy'}
               </button>

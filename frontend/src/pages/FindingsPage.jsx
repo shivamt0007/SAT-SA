@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
+﻿import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  AlertOctagon, Filter, Search, CheckCircle, Clock, 
-  MessageSquare, User, ExternalLink, ChevronDown, ChevronUp, FileText, Check 
+  AlertOctagon, Filter, Search, MessageSquare,
+  ExternalLink, ChevronDown, ChevronUp, FileText, Check 
 } from 'lucide-react';
 import { getFindings, reviewFinding, getSystemicPatterns } from '../api';
 import RiskBadge from '../components/RiskBadge';
@@ -155,18 +155,18 @@ export default function FindingsPage({ batchId }) {
   if (loading) return <LoadingSpinner message="Loading findings registry..." />;
 
   return (
-    <div className="max-w-[1700px] mx-auto p-6 space-y-6">
+    <div className="max-w-[1600px] mx-auto px-6 py-5 space-y-5">
       
       {/* Toast Notification */}
       {successToast && (
-        <div className="fixed bottom-6 right-6 z-50 bg-emerald-700 text-white px-4 py-2.5 rounded-lg shadow-lg flex items-center gap-2 text-xs font-semibold animate-in fade-in slide-in-from-bottom-2">
+        <div className="fixed bottom-6 right-6 z-50 bg-emerald-600 text-white px-4 py-2.5 rounded-lg shadow-lg flex items-center gap-2 text-xs font-semibold animate-in fade-in slide-in-from-bottom-2">
           <Check className="w-4 h-4" />
           {successToast}
         </div>
       )}
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-line pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-blue-700 uppercase tracking-wider mb-1">
             <AlertOctagon className="w-4 h-4" />
@@ -181,7 +181,7 @@ export default function FindingsPage({ batchId }) {
         </div>
 
         <div className="flex items-center gap-2 text-xs font-mono">
-          <span className="px-3 py-1 rounded bg-slate-100 border border-slate-200 text-slate-700">
+          <span className="px-3 py-1 rounded bg-slate-100 border border-line text-slate-700">
             Total: <strong>{stats.total}</strong>
           </span>
           <span className="px-3 py-1 rounded bg-amber-50 border border-amber-200 text-amber-800">
@@ -197,25 +197,25 @@ export default function FindingsPage({ batchId }) {
 
       {/* Summary KPI Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+        <div className="bg-paper border border-line rounded-lg p-4 shadow-xs">
           <div className="text-[11px] font-semibold uppercase text-slate-500 tracking-wider">Total Findings</div>
           <div className="text-2xl font-bold font-mono text-slate-900 mt-1">{stats.total}</div>
           <div className="text-[11px] text-slate-400 mt-0.5">Across all monitored CSEs</div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+        <div className="bg-paper border border-line rounded-lg p-4 shadow-xs">
           <div className="text-[11px] font-semibold uppercase text-amber-600 tracking-wider">Execution Gaps</div>
           <div className="text-2xl font-bold font-mono text-amber-700 mt-1">{stats.execGaps}</div>
           <div className="text-[11px] text-slate-400 mt-0.5">Workflow bypasses & anomalies</div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+        <div className="bg-paper border border-line rounded-lg p-4 shadow-xs">
           <div className="text-[11px] font-semibold uppercase text-purple-600 tracking-wider">Negative Space</div>
           <div className="text-2xl font-bold font-mono text-purple-700 mt-1">{stats.negSpace}</div>
           <div className="text-[11px] text-slate-400 mt-0.5">Missing telemetry & categories</div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+        <div className="bg-paper border border-line rounded-lg p-4 shadow-xs">
           <div className="text-[11px] font-semibold uppercase text-blue-600 tracking-wider">Triage Status</div>
           <div className="text-2xl font-bold font-mono text-blue-700 mt-1">
             {Math.round((stats.resolved / (stats.total || 1)) * 100)}%
@@ -226,45 +226,45 @@ export default function FindingsPage({ batchId }) {
 
       {/* Sector-Wide Systemic Findings Overview */}
       {systemicPatterns.length > 0 && (
-        <div className="bg-gradient-to-r from-purple-900 to-indigo-900 text-white rounded-lg p-4 shadow-sm space-y-3">
+        <div className="panel p-4 space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping inline-block"></span>
-              <h2 className="text-xs font-bold uppercase tracking-wider text-amber-300">
+              <span className="w-2.5 h-2.5 rounded-full bg-brand-600 inline-block" aria-hidden="true" />
+              <h2 className="text-[12px] font-bold uppercase tracking-wider text-brand-700">
                 Sector-Wide Systemic Vulnerabilities Detected ({systemicPatterns.length})
               </h2>
             </div>
-            <span className="text-[11px] font-mono text-purple-200">
+            <span className="text-[11px] font-mono text-faint">
               Threshold: max(3, 30% of CSEs) · Escalated Modal Severity
             </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {systemicPatterns.map(sp => (
-              <div 
-                key={sp.rule_id} 
-                className="bg-white/10 backdrop-blur-xs border border-white/15 rounded p-3 space-y-1.5 cursor-pointer hover:bg-white/15 transition-all"
+              <button
+                key={sp.rule_id}
                 onClick={() => setSearchTerm(sp.rule_id)}
                 title={`Click to filter findings by ${sp.rule_id}`}
+                className="w-full text-left bg-paper border border-line rounded-[10px] p-3 space-y-1.5 cursor-pointer hover:border-brand-300 hover:shadow-card-hover transition-all duration-150 ease-out"
               >
                 <div className="flex justify-between items-start">
-                  <span className="font-mono text-xs font-bold text-amber-300">{sp.rule_id}</span>
-                  <span className="text-[10px] font-bold uppercase px-1.5 py-0.2 rounded bg-rose-500/80 text-white">
+                  <span className="font-mono text-[11px] font-bold text-brand-800">{sp.rule_id}</span>
+                  <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-purple-50 text-purple-800 border border-purple-200">
                     {sp.escalated_severity}
                   </span>
                 </div>
-                <div className="text-xs font-semibold text-white">{sp.rule_name}</div>
-                <div className="text-[11px] text-purple-200">
-                  {sp.affected_count} CSEs affected: <span className="font-mono text-white">{(sp.affected_entities || []).join(', ')}</span>
+                <div className="text-[12px] font-semibold text-ink">{sp.rule_name}</div>
+                <div className="text-[11px] text-faint">
+                  {sp.affected_count} CSEs affected: <span className="font-mono text-brand-700">{(sp.affected_entities || []).join(', ')}</span>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
       )}
 
       {/* Filter and Search Bar */}
-      <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs space-y-3">
+      <div className="bg-paper border border-line rounded-lg p-4 shadow-xs space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-4">
           
           {/* Search */}
@@ -275,7 +275,7 @@ export default function FindingsPage({ batchId }) {
               placeholder="Search by ID, CSE, rule title, or evidence..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded focus:bg-white focus:border-blue-500 focus:outline-none transition-colors"
+              className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-line rounded focus:bg-slate-100 focus:border-brand-800 focus:outline-none transition-colors"
             />
           </div>
 
@@ -288,8 +288,8 @@ export default function FindingsPage({ batchId }) {
                 onClick={() => setCategoryFilter(cat)}
                 className={`px-2.5 py-1 rounded font-semibold text-xs transition-colors ${
                   categoryFilter === cat
-                    ? 'bg-blue-700 text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+                    ? 'bg-brand-600 text-white shadow-xs'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-line'
                 }`}
               >
                 {cat}
@@ -306,8 +306,8 @@ export default function FindingsPage({ batchId }) {
                 onClick={() => setStatusFilter(st)}
                 className={`px-2.5 py-1 rounded font-semibold text-xs transition-colors ${
                   statusFilter === st
-                    ? 'bg-blue-700 text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+                    ? 'bg-brand-600 text-white shadow-xs'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-line'
                 }`}
               >
                 {st.replace('_', ' ')}
@@ -319,10 +319,10 @@ export default function FindingsPage({ batchId }) {
       </div>
 
       {/* Findings Table */}
-      <div className="bg-white border border-slate-200 rounded-lg shadow-xs overflow-hidden">
+      <div className="bg-paper border border-line rounded-lg shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-600 border-b border-slate-200 uppercase font-semibold text-[11px] tracking-wider select-none">
+            <thead className="bg-slate-50 text-slate-600 border-b border-line uppercase font-semibold text-[11px] tracking-wider select-none">
               <tr>
                 <th className="p-3.5">Finding ID</th>
                 <th className="p-3.5">Entity</th>
@@ -334,11 +334,16 @@ export default function FindingsPage({ batchId }) {
                 <th className="p-3.5 text-right">Triage Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-line">
               {filteredFindings.length === 0 ? (
                 <tr>
-                  <td colSpan="8" className="p-8 text-center text-slate-400 italic">
-                    No findings found matching current filter parameters.
+                  <td colSpan="8" className="p-8 text-center">
+                    <div className="empty-state">
+                      <span className="empty-state-title">No findings match the current filters</span>
+                      <span className="empty-state-body">
+                        Relax the category, priority, or status filters above, or run a fresh assessment (<span className="font-semibold text-blue-700">Ingest → Analyze</span>) to regenerate the supervisory findings registry.
+                      </span>
+                    </div>
                   </td>
                 </tr>
               ) : (
@@ -373,7 +378,7 @@ export default function FindingsPage({ batchId }) {
                                 ? 'bg-amber-50 text-amber-800 border border-amber-200' 
                                 : f.category === 'NEGATIVE SPACE'
                                 ? 'bg-purple-50 text-purple-800 border border-purple-200'
-                                : 'bg-slate-100 text-slate-700 border border-slate-200'
+                                : 'bg-slate-100 text-slate-700 border border-line'
                             }`}>
                               {f.category}
                             </span>
@@ -430,7 +435,7 @@ export default function FindingsPage({ batchId }) {
                             onClick={() => setExpandedId(isExpanded ? null : f.finding_id)}
                             className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono font-semibold transition-colors ${
                               evList.length > 0 
-                                ? 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200' 
+                                ? 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-line' 
                                 : 'text-slate-400 bg-slate-50'
                             }`}
                           >
@@ -448,7 +453,7 @@ export default function FindingsPage({ batchId }) {
                         <td className="p-3.5 text-right">
                           <button
                             onClick={() => handleOpenReview(f)}
-                            className="px-2.5 py-1 rounded bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-semibold text-xs transition-colors"
+                            className="px-2.5 py-1 rounded bg-brand-50 hover:bg-brand-100 text-brand-700 border border-brand-200 font-semibold text-xs transition-colors"
                           >
                             Review / Triage
                           </button>
@@ -457,7 +462,7 @@ export default function FindingsPage({ batchId }) {
 
                       {/* Expandable Cited Evidence Drawer */}
                       {isExpanded && (
-                        <tr className="bg-slate-50/90 border-y border-slate-200">
+                        <tr className="bg-slate-50/90 border-y border-line">
                           <td colSpan="8" className="p-4">
                             <div className="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                               <FileText className="w-3.5 h-3.5 text-slate-500" />
@@ -468,11 +473,11 @@ export default function FindingsPage({ batchId }) {
                                 Statistical composite finding without isolated single alert identifier.
                               </div>
                             ) : (
-                              <div className="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto p-2 bg-white border border-slate-200 rounded">
+                              <div className="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto p-2 bg-paper border border-line rounded">
                                 {evList.map((id, idx) => (
                                   <span
                                     key={idx}
-                                    className="font-mono text-[11px] px-2 py-0.5 rounded bg-slate-100 text-slate-800 border border-slate-200"
+                                    className="font-mono text-[11px] px-2 py-0.5 rounded bg-slate-100 text-slate-800 border border-line"
                                   >
                                     {id}
                                   </span>
@@ -493,9 +498,9 @@ export default function FindingsPage({ batchId }) {
 
       {/* Review Modal */}
       {activeReviewFinding && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg border border-slate-200 shadow-xl max-w-lg w-full p-6 space-y-4 animate-in zoom-in-95">
-            <div className="flex items-start justify-between border-b border-slate-100 pb-3">
+        <div className="fixed inset-0 z-50 bg-ink/45 flex items-center justify-center p-4">
+          <div className="bg-paper rounded-lg border border-line shadow-xl max-w-lg w-full p-6 space-y-4 animate-in zoom-in-95">
+            <div className="flex items-start justify-between border-b border-line pb-3">
               <div>
                 <div className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">
                   Supervisory Triage Action
@@ -525,8 +530,8 @@ export default function FindingsPage({ batchId }) {
                       onClick={() => setReviewStatus(st)}
                       className={`p-2 rounded text-center font-semibold text-xs border transition-colors ${
                         reviewStatus === st
-                          ? 'bg-blue-700 text-white border-blue-700 shadow-xs'
-                          : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                          ? 'bg-blue-500 text-white border-blue-700 shadow-xs'
+                          : 'bg-slate-50 text-slate-700 border-line hover:bg-slate-100'
                       }`}
                     >
                       {st.replace('_', ' ')}
@@ -544,7 +549,7 @@ export default function FindingsPage({ batchId }) {
                   value={reviewerName}
                   onChange={(e) => setReviewerName(e.target.value)}
                   placeholder="e.g. Lead Supervisor, Audit Officer"
-                  className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded focus:bg-white focus:border-blue-500 focus:outline-none"
+                  className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-line rounded focus:bg-slate-100 focus:border-brand-800 focus:outline-none"
                 />
               </div>
 
@@ -557,16 +562,16 @@ export default function FindingsPage({ batchId }) {
                   onChange={(e) => setReviewNotes(e.target.value)}
                   placeholder="Provide audit notes, disposition rationale, or escalation orders..."
                   rows="3"
-                  className="w-full p-2.5 text-xs bg-slate-50 border border-slate-200 rounded focus:bg-white focus:border-blue-500 focus:outline-none"
+                  className="w-full p-2.5 text-xs bg-slate-50 border border-line rounded focus:bg-slate-100 focus:border-brand-800 focus:outline-none"
                 />
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-line">
               <button
                 type="button"
                 onClick={() => setActiveReviewFinding(null)}
-                className="px-3 py-1.5 rounded text-xs font-semibold text-slate-600 hover:bg-slate-100 border border-slate-200 transition-colors"
+                className="px-3 py-1.5 rounded text-xs font-semibold text-slate-600 hover:bg-slate-100 border border-line transition-colors"
               >
                 Cancel
               </button>
@@ -574,7 +579,7 @@ export default function FindingsPage({ batchId }) {
                 type="button"
                 disabled={submittingReview}
                 onClick={handleSaveReview}
-                className="px-4 py-1.5 rounded text-xs font-semibold bg-blue-700 hover:bg-blue-800 text-white transition-colors disabled:opacity-50 flex items-center gap-1.5"
+                className="px-4 py-1.5 rounded text-xs font-semibold bg-blue-500 hover:bg-blue-600 text-white transition-colors disabled:opacity-50 flex items-center gap-1.5"
               >
                 {submittingReview ? 'Recording...' : 'Commit Review Decision'}
               </button>

@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
-  Building2, ArrowLeft, ShieldAlert, CheckCircle2, Clock, 
-  FileText, GitBranch, EyeOff, BarChart3, ListOrdered, 
-  Save, AlertTriangle, HelpCircle, ExternalLink, ArrowRight,
-  Compass, History, Send, FileDown, Check, Sparkles, AlertOctagon
+  ArrowLeft, ShieldAlert, CheckCircle2, Clock,
+  FileText, GitBranch, EyeOff, BarChart3,
+  Save, AlertTriangle, Compass, History, FileDown, Check, AlertOctagon
 } from 'lucide-react';
 import { 
   getEntity, addNote, getCapabilityProfile, getTrend, 
@@ -140,7 +139,7 @@ export default function DrilldownPage({ batchId }) {
     return (
       <div className="p-12 text-center">
         <p className="text-slate-500">Entity {cseId} not found in this assessment batch.</p>
-        <button onClick={() => navigate('/entities')} className="mt-4 px-4 py-2 bg-blue-700 text-white text-xs rounded font-semibold">
+        <button onClick={() => navigate('/entities')} className="mt-4 px-4 py-2 bg-blue-500 text-white text-xs rounded font-semibold">
           Return to Entity Registry
         </button>
       </div>
@@ -175,7 +174,7 @@ export default function DrilldownPage({ batchId }) {
   ];
 
   return (
-    <div className="max-w-[1700px] mx-auto p-6 space-y-6 pb-16">
+    <div className="max-w-[1600px] mx-auto px-6 py-5 space-y-5 pb-16">
       
       {/* Back link & Breadcrumbs */}
       <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
@@ -191,7 +190,7 @@ export default function DrilldownPage({ batchId }) {
       </div>
 
       {/* Dossier Header Strip */}
-      <div className="bg-white border border-slate-200 rounded-lg p-6 shadow-xs">
+      <div className="bg-paper border border-line rounded-lg p-6 shadow-xs">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           
           {/* Entity Details */}
@@ -200,7 +199,7 @@ export default function DrilldownPage({ batchId }) {
               <h1 className="text-3xl font-extrabold font-mono text-slate-900 tracking-tight">
                 {cseId}
               </h1>
-              <span className="px-2.5 py-0.5 rounded text-xs font-bold bg-slate-100 text-slate-800 border border-slate-200 uppercase">
+              <span className="px-2.5 py-0.5 rounded text-xs font-bold bg-slate-100 text-slate-800 border border-line uppercase">
                 {data.sector || 'Sector Unknown'}
               </span>
               {data.is_grey && (
@@ -220,7 +219,7 @@ export default function DrilldownPage({ batchId }) {
             
             {/* Supervisory Coverage */}
             {coverageScore !== null && coverageScore !== undefined && (
-              <div className="text-left lg:text-right border-l lg:border-l-0 lg:border-r border-slate-200 pl-4 lg:pl-0 lg:pr-6">
+              <div className="text-left lg:text-right border-l lg:border-l-0 lg:border-r border-line pl-4 lg:pl-0 lg:pr-6">
                 <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                   Supervisory Coverage
                 </div>
@@ -242,7 +241,7 @@ export default function DrilldownPage({ batchId }) {
             </div>
 
             {/* Large Score */}
-            <div className="text-left lg:text-right border-l border-slate-200 pl-6">
+            <div className="text-left lg:text-right border-l border-line pl-6">
               <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">
                 Composite Score
               </div>
@@ -253,10 +252,10 @@ export default function DrilldownPage({ batchId }) {
             </div>
 
             {/* Draft Advisory Letter Action */}
-            <div className="text-left lg:text-right border-l border-slate-200 pl-6 flex flex-col justify-center">
+            <div className="text-left lg:text-right border-l border-line pl-6 flex flex-col justify-center">
               <button
                 onClick={handleOpenAdvisoryModal}
-                className="px-3 py-2 rounded text-xs font-semibold bg-blue-700 hover:bg-blue-800 text-white shadow-xs transition-colors flex items-center gap-1.5"
+                className="px-3 py-2 rounded text-xs font-semibold bg-blue-500 hover:bg-blue-600 text-white shadow-xs transition-colors flex items-center gap-1.5"
               >
                 <FileDown className="w-3.5 h-3.5" />
                 <span>Draft Advisory Letter</span>
@@ -270,14 +269,14 @@ export default function DrilldownPage({ batchId }) {
 
       {/* Advisory Toast */}
       {advisoryToast && (
-        <div className="fixed bottom-6 right-6 z-50 bg-emerald-700 text-white px-4 py-2.5 rounded-lg shadow-lg flex items-center gap-2 text-xs font-semibold animate-in fade-in">
+        <div className="fixed bottom-6 right-6 z-50 bg-emerald-600 text-white px-4 py-2.5 rounded-lg shadow-lg flex items-center gap-2 text-xs font-semibold animate-in fade-in">
           <Check className="w-4 h-4" />
           {advisoryToast}
         </div>
       )}
 
       {/* Executive Supervisory Callout */}
-      <div className="bg-slate-900 text-slate-200 rounded-lg p-5 shadow-xs border border-slate-800">
+      <div className="bg-paper text-slate-200 rounded-lg p-5 shadow-xs border border-slate-800">
         <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-400 mb-2">
           <ShieldAlert className="w-4 h-4 text-blue-400" />
           Supervisory Executive Assessment
@@ -315,7 +314,7 @@ export default function DrilldownPage({ batchId }) {
       </div>
 
       {/* Score Decomposition */}
-      <div className="bg-white border border-slate-200 rounded-lg p-5 shadow-xs">
+      <div className="bg-paper border border-line rounded-lg p-5 shadow-xs">
         <div className="text-xs font-bold uppercase text-slate-500 tracking-wider mb-3">
           Risk Score Breakdown & Point Contributions
         </div>
@@ -323,7 +322,7 @@ export default function DrilldownPage({ batchId }) {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex border-b border-slate-200 bg-white px-4 rounded-t-lg shadow-xs">
+      <div className="flex border-b border-line bg-paper px-4 rounded-t-lg shadow-xs">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -345,7 +344,7 @@ export default function DrilldownPage({ batchId }) {
       </div>
 
       {/* Tab Contents Area */}
-      <div className="bg-white border border-slate-200 rounded-b-lg p-6 shadow-xs">
+      <div className="bg-paper border border-line rounded-b-lg p-6 shadow-xs">
         
         {/* TAB 1: OPERATIONAL FLAGS & EXECUTION GAPS */}
         {activeTab === 'flags' && (
@@ -355,7 +354,7 @@ export default function DrilldownPage({ batchId }) {
             </div>
 
             {flags.length === 0 ? (
-              <div className="p-8 text-center text-slate-400 italic bg-slate-50 rounded border border-slate-200">
+              <div className="p-8 text-center text-slate-400 italic bg-slate-50 rounded border border-line">
                 No operational rule flags or execution gaps triggered for this entity.
               </div>
             ) : (
@@ -364,7 +363,7 @@ export default function DrilldownPage({ batchId }) {
                 return (
                   <div
                     key={idx}
-                    className="border border-slate-200 rounded-lg p-4 bg-slate-50/50 hover:bg-white transition-colors"
+                    className="border border-line rounded-lg p-4 bg-slate-50/50 hover:bg-paper transition-colors"
                   >
                     <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                       <div className="flex items-center gap-2">
@@ -388,7 +387,7 @@ export default function DrilldownPage({ batchId }) {
                     </p>
 
                     {/* Structured Comparison if available */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-white border border-slate-200 rounded p-2.5 text-xs mb-3 font-mono text-[11px]">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-paper border border-line rounded p-2.5 text-xs mb-3 font-mono text-[11px]">
                       <div>
                         <span className="text-emerald-700 font-bold block text-[10px] uppercase font-sans">Expected</span>
                         {flag.expected || 'Adherence to standard SOC operational baseline'}
@@ -410,7 +409,7 @@ export default function DrilldownPage({ batchId }) {
                         </span>
                         <div className="flex flex-wrap gap-1 max-h-24 overflow-y-auto">
                           {evList.map((id, i) => (
-                            <span key={i} className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">
+                            <span key={i} className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 border border-line">
                               {id}
                             </span>
                           ))}
@@ -427,7 +426,7 @@ export default function DrilldownPage({ batchId }) {
         {/* TAB 2: NCIIPC 8-CAPABILITY PROFILE & RADAR */}
         {activeTab === 'capability' && (
           <div className="space-y-6">
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-3">
               <div>
                 <h3 className="text-xs font-bold uppercase text-slate-800 tracking-wider">
                   NCIIPC Official 8-Capability Operational Maturity Radar
@@ -448,13 +447,13 @@ export default function DrilldownPage({ batchId }) {
             </div>
 
             {!capabilityData ? (
-              <div className="p-8 text-center text-slate-400 italic bg-slate-50 rounded border border-slate-200">
+              <div className="p-8 text-center text-slate-400 italic bg-slate-50 rounded border border-line">
                 Capability profile not available for this entity.
               </div>
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                 {/* 8-Axis Radar Chart */}
-                <div className="lg:col-span-6 bg-slate-50 border border-slate-200 rounded-lg p-3">
+                <div className="lg:col-span-6 bg-slate-50 border border-line rounded-lg p-3">
                   <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 text-center mb-1">
                     Entity vs. Sector Peer Average Overlay
                   </div>
@@ -475,8 +474,8 @@ export default function DrilldownPage({ batchId }) {
 
                 {/* Capability Matrix Breakdown */}
                 <div className="lg:col-span-6 overflow-x-auto">
-                  <table className="w-full text-left text-xs border border-slate-200 rounded-lg overflow-hidden">
-                    <thead className="bg-slate-100 text-slate-700 font-bold uppercase text-[10px] border-b border-slate-200">
+                  <table className="w-full text-left text-xs border border-line rounded-lg overflow-hidden">
+                    <thead className="bg-slate-100 text-slate-700 font-bold uppercase text-[10px] border-b border-line">
                       <tr>
                         <th className="p-2.5">NCIIPC Capability</th>
                         <th className="p-2.5 text-center">Score</th>
@@ -485,7 +484,7 @@ export default function DrilldownPage({ batchId }) {
                         <th className="p-2.5">Supervisory Status</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y divide-line">
                       {(capabilityData.capabilities || []).map((cap) => {
                         const deficit = cap.score - cap.peer_average;
                         const isAttention = cap.status === 'NEEDS_ATTENTION' || cap.score < 60;
@@ -532,7 +531,7 @@ export default function DrilldownPage({ batchId }) {
         {/* TAB 3: SUPERVISORY MEMORY & TREND */}
         {activeTab === 'trend' && (
           <div className="space-y-6">
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-3">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-3">
               <div>
                 <h3 className="text-xs font-bold uppercase text-slate-800 tracking-wider">
                   Assessment-Cycle Trend & Recurrence Tracking ("Supervisory Memory")
@@ -558,7 +557,7 @@ export default function DrilldownPage({ batchId }) {
 
             {/* Sparkline / History Line Chart */}
             {trendData?.history && trendData.history.length > 1 && (
-              <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+              <div className="bg-slate-50 border border-line rounded-lg p-4">
                 <div className="text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-2">
                   Historical Risk Score Progression ({trendData.history.length} Assessment Batches)
                 </div>
@@ -595,7 +594,7 @@ export default function DrilldownPage({ batchId }) {
                     <div className="text-[11px] text-slate-400 italic py-4 text-center">No new findings introduced.</div>
                   ) : (
                     trendData.comparison.new_findings.map((f, i) => (
-                      <div key={i} className="bg-white border border-blue-200 rounded p-2.5 text-xs space-y-1">
+                      <div key={i} className="bg-paper border border-blue-200 rounded p-2.5 text-xs space-y-1">
                         <div className="flex items-center justify-between">
                           <span className="font-mono font-bold text-blue-800 text-[11px]">{f.rule_id}</span>
                           <RiskBadge level={f.priority || f.severity} />
@@ -624,7 +623,7 @@ export default function DrilldownPage({ batchId }) {
                     <div className="text-[11px] text-slate-400 italic py-4 text-center">No prior findings resolved.</div>
                   ) : (
                     trendData.comparison.resolved_findings.map((f, i) => (
-                      <div key={i} className="bg-white border border-emerald-200 rounded p-2.5 text-xs space-y-1">
+                      <div key={i} className="bg-paper border border-emerald-200 rounded p-2.5 text-xs space-y-1">
                         <div className="flex items-center justify-between">
                           <span className="font-mono font-bold text-emerald-800 text-[11px]">{f.rule_id}</span>
                           <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">CLEARED</span>
@@ -653,7 +652,7 @@ export default function DrilldownPage({ batchId }) {
                     <div className="text-[11px] text-slate-400 italic py-4 text-center">No recurring findings detected.</div>
                   ) : (
                     trendData.comparison.recurring_findings.map((f, i) => (
-                      <div key={i} className={`bg-white border rounded p-2.5 text-xs space-y-1.5 ${
+                      <div key={i} className={`bg-paper border rounded p-2.5 text-xs space-y-1.5 ${
                         f.is_chronic ? 'border-rose-300 ring-1 ring-rose-200' : 'border-amber-200'
                       }`}>
                         <div className="flex items-center justify-between">
@@ -692,7 +691,7 @@ export default function DrilldownPage({ batchId }) {
             </div>
 
             {negSpace.length === 0 ? (
-              <div className="p-8 text-center text-slate-400 italic bg-slate-50 rounded border border-slate-200">
+              <div className="p-8 text-center text-slate-400 italic bg-slate-50 rounded border border-line">
                 No negative space absences or silent critical assets identified.
               </div>
             ) : (
@@ -719,7 +718,7 @@ export default function DrilldownPage({ batchId }) {
                     {ns.description}
                   </p>
 
-                  <div className="grid grid-cols-2 gap-3 bg-white border border-slate-200 rounded p-2.5 text-xs font-mono text-[11px] mb-2">
+                  <div className="grid grid-cols-2 gap-3 bg-paper border border-line rounded p-2.5 text-xs font-mono text-[11px] mb-2">
                     <div>
                       <span className="text-emerald-700 font-bold block text-[10px] uppercase font-sans">Expected Evidence</span>
                       {ns.expected || ns.expected_value}
@@ -743,7 +742,7 @@ export default function DrilldownPage({ batchId }) {
             </div>
 
             {peerContext.length === 0 ? (
-              <div className="p-8 text-center text-slate-400 italic bg-slate-50 rounded border border-slate-200">
+              <div className="p-8 text-center text-slate-400 italic bg-slate-50 rounded border border-line">
                 No peer benchmark distribution data available.
               </div>
             ) : (
@@ -760,7 +759,7 @@ export default function DrilldownPage({ batchId }) {
                   const label = labelMap[item.metric] || item.metric.replace(/_/g, ' ');
 
                   return (
-                    <div key={item.metric} className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                    <div key={item.metric} className="bg-slate-50 border border-line rounded-lg p-4">
                       <div className="flex justify-between items-center text-xs font-bold text-slate-800 mb-2">
                         <span>{label}</span>
                         <span className={`font-mono text-[11px] ${
@@ -837,11 +836,11 @@ export default function DrilldownPage({ batchId }) {
             </div>
 
             {timeline.length === 0 ? (
-              <div className="p-8 text-center text-slate-400 italic bg-slate-50 rounded border border-slate-200">
+              <div className="p-8 text-center text-slate-400 italic bg-slate-50 rounded border border-line">
                 No recent chronological alert/case records available for timeline reconstruction.
               </div>
             ) : (
-              <div className="border-l-2 border-slate-200 ml-4 pl-4 space-y-4">
+              <div className="border-l-2 border-line ml-4 pl-4 space-y-4">
                 {timeline.map((item, i) => (
                   <div key={i} className="relative text-xs">
                     <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-blue-600 border-2 border-white" />
@@ -863,7 +862,7 @@ export default function DrilldownPage({ batchId }) {
       </div>
 
       {/* Supervisor Annotations Form */}
-      <div className="bg-white border border-slate-200 rounded-lg p-5 shadow-xs">
+      <div className="bg-paper border border-line rounded-lg p-5 shadow-xs">
         <div className="flex items-center justify-between mb-2">
           <div>
             <h3 className="text-xs font-bold uppercase text-slate-700 tracking-wider">
@@ -885,14 +884,14 @@ export default function DrilldownPage({ batchId }) {
           onChange={(e) => setNoteInput(e.target.value)}
           placeholder="Add official supervisor audit findings, remediation requirements, or verification notes..."
           rows="3"
-          className="w-full p-3 text-xs bg-slate-50 border border-slate-200 rounded focus:bg-white focus:border-blue-500 focus:outline-none mb-3 font-sans"
+          className="w-full p-3 text-xs bg-slate-50 border border-line rounded focus:bg-slate-100 focus:border-brand-800 focus:outline-none mb-3 font-sans"
         />
 
         <div className="flex justify-end">
           <button
             onClick={handleSaveNote}
             disabled={savingNote}
-            className="px-4 py-1.5 rounded text-xs font-semibold bg-blue-700 hover:bg-blue-800 text-white transition-colors disabled:opacity-50 flex items-center gap-1.5"
+            className="px-4 py-1.5 rounded text-xs font-semibold bg-blue-500 hover:bg-blue-600 text-white transition-colors disabled:opacity-50 flex items-center gap-1.5"
           >
             <Save className="w-3.5 h-3.5" />
             {savingNote ? 'Saving...' : 'Save Supervisor Note'}
@@ -902,11 +901,11 @@ export default function DrilldownPage({ batchId }) {
 
       {/* Supervisory Advisory Letter Modal */}
       {advisoryModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg border border-slate-300 shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col animate-in zoom-in-95 overflow-hidden">
+        <div className="fixed inset-0 z-50 bg-ink/45 flex items-center justify-center p-4">
+          <div className="bg-paper rounded-lg border border-slate-300 shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col animate-in zoom-in-95 overflow-hidden">
             
             {/* Modal Header */}
-            <div className="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+            <div className="px-6 py-4 bg-paper text-white flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <FileText className="w-5 h-5 text-blue-400" />
                 <div>
@@ -937,7 +936,7 @@ export default function DrilldownPage({ batchId }) {
               ) : currentAdvisory ? (
                 <>
                   {/* Letter Metadata Preview Box */}
-                  <div className="bg-slate-50 border border-slate-200 rounded p-4 font-mono text-[11px] grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div className="bg-slate-50 border border-line rounded p-4 font-mono text-[11px] grid grid-cols-2 sm:grid-cols-4 gap-3">
                     <div>
                       <span className="text-slate-400 uppercase text-[10px] block">Reference</span>
                       <strong className="text-slate-800">{currentAdvisory.reference_number}</strong>
@@ -957,7 +956,7 @@ export default function DrilldownPage({ batchId }) {
                   </div>
 
                   {/* Letter Full Text Preview */}
-                  <div className="border border-slate-200 rounded-lg p-6 bg-white font-serif text-[12px] leading-relaxed text-slate-800 space-y-4 shadow-2xs whitespace-pre-wrap max-h-96 overflow-y-auto select-text">
+                  <div className="border border-line rounded-lg p-6 bg-paper font-serif text-[12px] leading-relaxed text-slate-800 space-y-4 shadow-2xs whitespace-pre-wrap max-h-96 overflow-y-auto select-text">
                     {currentAdvisory.rendered_content}
                   </div>
 
@@ -974,7 +973,7 @@ export default function DrilldownPage({ batchId }) {
                       onChange={(e) => setAdvisoryDirective(e.target.value)}
                       placeholder="e.g. The entity is hereby directed to complete immediate audit trail verification on assets and provide a signed compliance report within 14 working days..."
                       rows="3"
-                      className="w-full p-2.5 text-xs bg-white border border-blue-300 rounded font-sans focus:border-blue-600 focus:outline-none"
+                      className="w-full p-2.5 text-xs bg-paper border border-blue-300 rounded font-sans focus:border-blue-600 focus:outline-none"
                     />
                   </div>
                 </>
@@ -985,13 +984,13 @@ export default function DrilldownPage({ batchId }) {
 
             {/* Modal Actions Footer */}
             {currentAdvisory && (
-              <div className="px-6 py-3 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
+              <div className="px-6 py-3 bg-slate-50 border-t border-line flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
                     disabled={savingAdvisory}
                     onClick={handleSaveAdvisoryDraft}
-                    className="px-3 py-1.5 rounded text-xs font-semibold bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 transition-colors disabled:opacity-50"
+                    className="px-3 py-1.5 rounded text-xs font-semibold bg-paper hover:bg-slate-100 text-slate-700 border border-slate-300 transition-colors disabled:opacity-50"
                   >
                     {savingAdvisory ? 'Saving...' : 'Save Directive'}
                   </button>
@@ -1001,7 +1000,7 @@ export default function DrilldownPage({ batchId }) {
                       type="button"
                       disabled={savingAdvisory}
                       onClick={handleApproveAdvisory}
-                      className="px-3 py-1.5 rounded text-xs font-semibold bg-emerald-700 hover:bg-emerald-800 text-white transition-colors disabled:opacity-50 flex items-center gap-1.5"
+                      className="px-3 py-1.5 rounded text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition-colors disabled:opacity-50 flex items-center gap-1.5"
                     >
                       <Check className="w-3.5 h-3.5" />
                       Approve & Issue Letter
@@ -1014,7 +1013,7 @@ export default function DrilldownPage({ batchId }) {
                     href={getAdvisoryPdfUrl(currentAdvisory.id)}
                     target="_blank"
                     rel="noreferrer"
-                    className="px-4 py-1.5 rounded text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white shadow-xs transition-colors flex items-center gap-1.5"
+                    className="px-4 py-1.5 rounded text-xs font-semibold bg-paper hover:bg-slate-700 text-white shadow-xs transition-colors flex items-center gap-1.5"
                   >
                     <FileDown className="w-4 h-4" />
                     Download Official PDF
@@ -1023,7 +1022,7 @@ export default function DrilldownPage({ batchId }) {
                   <button
                     type="button"
                     onClick={() => setAdvisoryModalOpen(false)}
-                    className="px-3 py-1.5 rounded text-xs font-semibold text-slate-600 hover:bg-slate-200 border border-slate-200 transition-colors"
+                    className="px-3 py-1.5 rounded text-xs font-semibold text-slate-600 hover:bg-slate-200 border border-line transition-colors"
                   >
                     Close
                   </button>

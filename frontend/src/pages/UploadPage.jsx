@@ -1,9 +1,6 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+﻿import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Upload, FileType, CheckCircle, AlertTriangle, XCircle, 
-  Info, Database, PlayCircle, ArrowRight, Layers 
-} from 'lucide-react';
+import { Upload, FileType, CheckCircle, XCircle, Info, Database, PlayCircle, ArrowRight } from 'lucide-react';
 import { uploadFiles, runAnalysis, getBatches } from '../api';
 import ErrorBanner from '../components/ErrorBanner';
 
@@ -109,27 +106,58 @@ export default function UploadPage({ onBatchReady }) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8 mt-4">
-      
+    <div className="max-w-3xl mx-auto px-6 py-5 space-y-5">
+
       {/* Page Header */}
-      <div className="border-b border-slate-200 pb-4">
-        <div className="flex items-center gap-2 text-xs font-semibold text-blue-700 uppercase tracking-wider mb-1">
-          <Upload className="w-4 h-4" />
-          Data Ingestion Gateway
+      <div className="flex items-center gap-3 flex-wrap">
+        <div>
+          <div className="flex items-center gap-2 text-xs font-semibold text-blue-700 uppercase tracking-wide mb-1">
+            <Upload className="w-4 h-4" />
+            Data Ingestion Gateway
+          </div>
+          <h1 className="text-xl font-bold tracking-tight text-ink">
+            Ingest SOC Evidence Data
+          </h1>
+          <p className="text-[13px] text-slate-500 mt-0.5">
+            Submit Critical Sector Entity (CSE) alerts, investigation cases, and asset catalogs for supervisory analysis.
+          </p>
         </div>
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-          Ingest SOC Evidence Data
-        </h1>
-        <p className="text-sm text-slate-500 mt-0.5">
-          Submit Critical Sector Entity (CSE) alerts, investigation cases, and asset catalogs for supervisory analysis.
-        </p>
+      </div>
+
+      {/* Ingest workflow: Upload → Validate → Analyze */}
+      <div className="flex items-center gap-2" aria-label="Ingestion workflow steps">
+        {[
+          { n: 1, label: 'Upload' },
+          { n: 2, label: 'Validate' },
+          { n: 3, label: 'Analyze' },
+        ].map((step, i) => {
+          const state = summary === null
+            ? (step.n === 1 ? 'active' : 'upcoming')
+            : (analysing
+                ? (step.n === 3 ? 'active' : 'done')
+                : (step.n === 1 || step.n === 2 ? 'done' : 'upcoming'));
+          return (
+            <React.Fragment key={step.n}>
+              {i > 0 && <span className="w-5 h-px bg-slate-300" aria-hidden="true"></span>}
+              <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm text-[11px] font-semibold border ${
+                state === 'active' ? 'border-blue-600 bg-blue-50 text-blue-800'
+                : state === 'done' ? 'border-emerald-200 bg-emerald-50 text-emerald-800'
+                : 'border-slate-300 bg-paper text-slate-500'
+              }`}>
+                <span className="font-mono text-[10px]">{String(step.n).padStart(2, '0')}</span>
+                {step.label}
+                {state === 'done' && <CheckCircle className="w-3 h-3" />}
+              </span>
+            </React.Fragment>
+          );
+        })}
       </div>
 
       <ErrorBanner message={error} onDismiss={() => setError(null)} />
 
       {/* Quick Launch Card for Existing / Sample Datasets */}
       {existingBatches.length > 0 && !summary && (
-        <div className="bg-blue-50/50 border border-blue-200 rounded-lg p-5 shadow-xs">
+        <div className="bg-paper border border-line rounded-md p-4">
           <div className="flex items-center justify-between gap-4 mb-3">
             <div className="flex items-center gap-2">
               <Database className="w-4 h-4 text-blue-700" />
@@ -137,7 +165,7 @@ export default function UploadPage({ onBatchReady }) {
                 Pre-Analysed Evaluation Datasets Available
               </h3>
             </div>
-            <span className="text-[11px] font-semibold text-blue-800 bg-blue-100 px-2 py-0.5 rounded">
+            <span className="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-sm">
               Ready for Instant Review
             </span>
           </div>
@@ -150,7 +178,7 @@ export default function UploadPage({ onBatchReady }) {
             {existingBatches.slice(0, 3).map((b) => (
               <div
                 key={b.batch_id}
-                className="flex items-center justify-between bg-white border border-slate-200 hover:border-blue-300 rounded p-3 text-xs transition-colors shadow-2xs"
+                className="flex items-center justify-between bg-paper border border-line hover:border-blue-300 rounded p-3 text-xs transition-colors shadow-2xs"
               >
                 <div>
                   <div className="font-mono font-bold text-slate-900 flex items-center gap-2">
@@ -166,7 +194,7 @@ export default function UploadPage({ onBatchReady }) {
 
                 <button
                   onClick={() => handleSelectExistingBatch(b)}
-                  className="flex items-center gap-1 px-3 py-1.5 rounded text-xs font-semibold bg-blue-700 hover:bg-blue-800 text-white transition-colors shadow-xs"
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-semibold bg-paper text-blue-800 border border-slate-300 hover:bg-blue-50 hover:border-slate-400 transition-colors"
                 >
                   Load Assessment
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -181,7 +209,7 @@ export default function UploadPage({ onBatchReady }) {
       {!summary ? (
         <div className="space-y-6">
           <div
-            className={`border-2 border-dashed rounded-lg p-10 text-center transition-colors cursor-pointer bg-white ${
+            className={`border-2 border-dashed rounded-md p-8 text-center transition-colors cursor-pointer bg-paper ${
               isDragging
                 ? 'border-blue-500 bg-blue-50/50'
                 : 'border-slate-300 hover:border-slate-400'
@@ -200,23 +228,27 @@ export default function UploadPage({ onBatchReady }) {
               ref={fileInputRef}
               onChange={handleFileChange}
             />
-            <Upload className="w-10 h-10 text-slate-400 mx-auto mb-3" />
-            <p className="text-sm font-bold text-slate-800">
-              Drag & drop SOC submission files here, or click to browse
+            <Upload className="w-9 h-9 text-slate-400 mx-auto mb-3" />
+            <p className="text-sm font-semibold text-slate-800">
+              Drop files here
             </p>
             <p className="text-xs text-slate-500 mt-1">
-              Supports CSV or JSON formats for alert logs, incident cases, and asset inventories.
+              …or click to browse. CSV / JSON for alert logs, incident cases, and asset inventories.
+            </p>
+            <p className="mt-4 flex items-center justify-center gap-1.5">
+              <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-medium bg-slate-100 text-slate-600 border border-slate-300">CSV</span>
+              <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-medium bg-slate-100 text-slate-600 border border-slate-300">JSON</span>
             </p>
           </div>
 
           {files.length > 0 && (
-            <div className="bg-white rounded-lg p-4 border border-slate-200 shadow-xs">
+            <div className="bg-paper rounded-md p-3.5 border border-line">
               <h3 className="text-xs font-bold uppercase text-slate-700 tracking-wider mb-3">
                 Staged Evidence Files ({files.length})
               </h3>
               <ul className="space-y-2">
                 {files.map((f, i) => (
-                  <li key={i} className="flex items-center justify-between bg-slate-50 p-2.5 rounded border border-slate-200 text-xs">
+                  <li key={i} className="flex items-center justify-between bg-slate-50 p-2.5 rounded border border-line text-xs">
                     <div className="flex items-center gap-2.5">
                       <FileType className="w-4 h-4 text-blue-700" />
                       <span className="font-medium text-slate-800">{f.name}</span>
@@ -234,10 +266,10 @@ export default function UploadPage({ onBatchReady }) {
                 ))}
               </ul>
 
-              <div className="mt-4 flex items-center justify-end gap-4 pt-3 border-t border-slate-100">
+              <div className="mt-4 flex items-center justify-end gap-4 pt-3 border-t border-line">
                 {uploading && (
                   <div className="flex-1 flex items-center gap-3">
-                    <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden border border-slate-200">
+                    <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden border border-line">
                       <div className="bg-blue-600 h-full transition-all" style={{ width: `${progress}%` }} />
                     </div>
                     <span className="text-xs font-mono text-slate-500 w-10">{progress}%</span>
@@ -246,7 +278,7 @@ export default function UploadPage({ onBatchReady }) {
                 <button
                   onClick={handleUpload}
                   disabled={uploading}
-                  className="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2 rounded text-xs font-bold transition-colors disabled:opacity-50 shadow-xs"
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-md text-xs font-semibold transition-colors disabled:opacity-50 shadow-xs"
                 >
                   {uploading ? 'Ingesting Files...' : 'Ingest Staged Files'}
                 </button>
@@ -255,27 +287,27 @@ export default function UploadPage({ onBatchReady }) {
           )}
         </div>
       ) : (
-        <div className="bg-white rounded-lg p-6 border border-slate-200 shadow-xs space-y-6">
+        <div className="bg-paper rounded-md p-5 border border-line space-y-5">
           <div className="flex items-center gap-3">
             <CheckCircle className="w-8 h-8 text-emerald-600" />
             <div>
-              <h2 className="text-lg font-bold text-slate-900">Ingestion Verified & Parsed</h2>
+              <h2 className="text-base font-bold text-ink">Ingestion Verified & Parsed</h2>
               <p className="text-xs font-mono text-slate-500">Batch ID: {summary.batch_id}</p>
             </div>
           </div>
 
           <div className="grid grid-cols-3 gap-4">
-            <div className="bg-slate-50 border border-slate-200 p-4 rounded text-center">
+            <div className="bg-slate-50 border border-line p-4 rounded text-center">
               <span className="text-[11px] font-semibold uppercase text-slate-500">Alerts Parsed</span>
-              <p className="text-2xl font-bold font-mono text-slate-900 mt-1">{summary.records_parsed?.alerts || 0}</p>
+              <p className="text-xl font-bold text-ink mt-1">{summary.records_parsed?.alerts || 0}</p>
             </div>
-            <div className="bg-slate-50 border border-slate-200 p-4 rounded text-center">
+            <div className="bg-slate-50 border border-line p-4 rounded text-center">
               <span className="text-[11px] font-semibold uppercase text-slate-500">Cases Parsed</span>
-              <p className="text-2xl font-bold font-mono text-slate-900 mt-1">{summary.records_parsed?.cases || 0}</p>
+              <p className="text-xl font-bold text-ink mt-1">{summary.records_parsed?.cases || 0}</p>
             </div>
-            <div className="bg-slate-50 border border-slate-200 p-4 rounded text-center">
+            <div className="bg-slate-50 border border-line p-4 rounded text-center">
               <span className="text-[11px] font-semibold uppercase text-slate-500">Assets Parsed</span>
-              <p className="text-2xl font-bold font-mono text-slate-900 mt-1">{summary.records_parsed?.assets || 0}</p>
+              <p className="text-xl font-bold text-ink mt-1">{summary.records_parsed?.assets || 0}</p>
             </div>
           </div>
 
@@ -283,7 +315,7 @@ export default function UploadPage({ onBatchReady }) {
             <button
               onClick={handleRunAnalysis}
               disabled={analysing}
-              className="bg-blue-700 hover:bg-blue-800 text-white px-6 py-2.5 rounded text-xs font-bold transition-colors disabled:opacity-50 flex items-center gap-2 shadow-xs"
+              className="bg-brand-600 hover:bg-brand-700 text-white px-6 py-2.5 rounded-[9px] text-xs font-semibold transition-colors disabled:opacity-50 flex items-center gap-2 shadow-card"
             >
               {analysing ? (
                 <>
@@ -302,7 +334,7 @@ export default function UploadPage({ onBatchReady }) {
       )}
 
       {/* Format Tips */}
-      <div className="bg-white border border-slate-200 rounded-lg p-5 shadow-xs">
+      <div className="bg-paper border border-line rounded-md p-4">
         <div className="flex items-center gap-2 mb-3">
           <Info className="w-4 h-4 text-blue-700" />
           <h3 className="text-xs font-bold uppercase text-slate-700 tracking-wider">
@@ -310,7 +342,7 @@ export default function UploadPage({ onBatchReady }) {
           </h3>
         </div>
         <div className="grid md:grid-cols-3 gap-4 text-xs">
-          <div className="bg-slate-50 p-3 rounded border border-slate-200">
+          <div className="bg-slate-50 p-3 rounded border border-line">
             <span className="font-bold text-slate-800 block mb-1">Alerts Stream</span>
             <ul className="list-disc list-inside text-slate-600 font-mono text-[11px] space-y-0.5">
               <li>alert_id</li>
@@ -321,7 +353,7 @@ export default function UploadPage({ onBatchReady }) {
               <li>closed_at</li>
             </ul>
           </div>
-          <div className="bg-slate-50 p-3 rounded border border-slate-200">
+          <div className="bg-slate-50 p-3 rounded border border-line">
             <span className="font-bold text-slate-800 block mb-1">Investigation Cases</span>
             <ul className="list-disc list-inside text-slate-600 font-mono text-[11px] space-y-0.5">
               <li>case_id</li>
@@ -331,7 +363,7 @@ export default function UploadPage({ onBatchReady }) {
               <li>escalated (bool)</li>
             </ul>
           </div>
-          <div className="bg-slate-50 p-3 rounded border border-slate-200">
+          <div className="bg-slate-50 p-3 rounded border border-line">
             <span className="font-bold text-slate-800 block mb-1">Asset Catalog</span>
             <ul className="list-disc list-inside text-slate-600 font-mono text-[11px] space-y-0.5">
               <li>asset_id</li>

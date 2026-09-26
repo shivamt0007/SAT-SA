@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  ShieldCheck, AlertTriangle, CheckCircle2, XCircle, 
-  Database, FileCheck, Layers, HelpCircle 
-} from 'lucide-react';
+﻿import React, { useState, useEffect } from 'react';
+import { AlertTriangle, CheckCircle2, FileCheck } from 'lucide-react';
 import { getDataQuality } from '../api';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorBanner from '../components/ErrorBanner';
@@ -66,10 +63,10 @@ export default function DataQualityPage({ batchId }) {
   ];
 
   return (
-    <div className="max-w-[1700px] mx-auto p-6 space-y-6">
+    <div className="max-w-[1600px] mx-auto px-6 py-5 space-y-5">
       
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-line pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-blue-700 uppercase tracking-wider mb-1">
             <FileCheck className="w-4 h-4" />
@@ -84,7 +81,7 @@ export default function DataQualityPage({ batchId }) {
         </div>
 
         <div className="flex items-center gap-3 font-mono text-xs">
-          <span className="px-3 py-1.5 rounded bg-slate-100 border border-slate-200 text-slate-700 font-semibold">
+          <span className="px-3 py-1.5 rounded bg-slate-100 border border-line text-slate-700 font-semibold">
             Batch: {batchId.slice(0, 12)}
           </span>
         </div>
@@ -93,7 +90,7 @@ export default function DataQualityPage({ batchId }) {
       {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
 
       {/* Top Banner: Integrity Score & Verdict */}
-      <div className="bg-white border border-slate-200 rounded-lg p-6 shadow-xs flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="bg-paper border border-line rounded-lg p-6 shadow-xs flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex items-center gap-4">
           <div className={`w-14 h-14 rounded-full flex items-center justify-center font-bold font-mono text-lg ${
             score >= 80 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200'
@@ -113,7 +110,7 @@ export default function DataQualityPage({ batchId }) {
           </div>
         </div>
 
-        <div className="flex items-center gap-6 font-mono text-xs text-right border-t md:border-t-0 md:border-l border-slate-200 pt-4 md:pt-0 md:pl-6">
+        <div className="flex items-center gap-6 font-mono text-xs text-right border-t md:border-t-0 md:border-l border-line pt-4 md:pt-0 md:pl-6">
           <div>
             <div className="text-slate-400 text-[10px] uppercase">Records Received</div>
             <div className="text-base font-bold text-slate-900 mt-0.5">{data.records_received}</div>
@@ -131,19 +128,19 @@ export default function DataQualityPage({ batchId }) {
 
       {/* Breakdown Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+        <div className="bg-paper border border-line rounded-lg p-4 shadow-xs">
           <div className="text-[11px] font-semibold uppercase text-slate-500 tracking-wider">Alerts Ingested</div>
           <div className="text-2xl font-bold font-mono text-slate-900 mt-1">{data.alert_count}</div>
           <div className="text-[11px] text-slate-400 mt-0.5">Operational telemetry events</div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+        <div className="bg-paper border border-line rounded-lg p-4 shadow-xs">
           <div className="text-[11px] font-semibold uppercase text-slate-500 tracking-wider">Incident Cases</div>
           <div className="text-2xl font-bold font-mono text-slate-900 mt-1">{data.case_count}</div>
           <div className="text-[11px] text-slate-400 mt-0.5">Formal case investigations</div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+        <div className="bg-paper border border-line rounded-lg p-4 shadow-xs">
           <div className="text-[11px] font-semibold uppercase text-slate-500 tracking-wider">Assets Catalogued</div>
           <div className="text-2xl font-bold font-mono text-slate-900 mt-1">{data.asset_count}</div>
           <div className="text-[11px] text-slate-400 mt-0.5">Critical sector infrastructure nodes</div>
@@ -151,14 +148,14 @@ export default function DataQualityPage({ batchId }) {
       </div>
 
       {/* Integrity Checks List */}
-      <div className="bg-white border border-slate-200 rounded-lg shadow-xs overflow-hidden">
-        <div className="p-4 border-b border-slate-200 bg-slate-50/50">
+      <div className="bg-paper border border-line rounded-lg shadow-xs overflow-hidden">
+        <div className="p-4 border-b border-line bg-slate-50/50">
           <h3 className="text-xs font-bold uppercase text-slate-700 tracking-wider">
             Automated Audit Verification Results
           </h3>
         </div>
 
-        <div className="divide-y divide-slate-100">
+        <div className="divide-y divide-line">
           {checks.map((c, i) => (
             <div key={i} className="p-4.5 flex items-start justify-between gap-4">
               <div className="flex items-start gap-3">

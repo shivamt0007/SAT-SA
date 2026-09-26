@@ -47,12 +47,16 @@ async def ingest_files(
             errors.append({"file": file.filename, "message": "Failed to decode UTF-8"})
             continue
             
-        if file.filename.endswith('.csv'):
-            df = pd.read_csv(io.StringIO(content_str))
-        elif file.filename.endswith('.json'):
-            df = pd.read_json(io.StringIO(content_str))
-        else:
-            warnings.append(f"Skipping {file.filename}: unknown format")
+        try:
+            if file.filename.endswith('.csv'):
+                df = pd.read_csv(io.StringIO(content_str))
+            elif file.filename.endswith('.json'):
+                df = pd.read_json(io.StringIO(content_str))
+            else:
+                warnings.append(f"Skipping {file.filename}: unknown format")
+                continue
+        except (pd.errors.ParserError, ValueError, TypeError) as e:
+            errors.append({"file": file.filename, "message": f"Malformed {file.filename.split('.')[-1].upper()} content: {e}"})
             continue
             
         cols = set(df.columns)

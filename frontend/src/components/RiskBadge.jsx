@@ -1,4 +1,4 @@
-export default function RiskBadge({ level = 'UNASSESSED' }) {
+﻿export default function RiskBadge({ level = 'UNASSESSED' }) {
   const normLevel = (level || 'UNASSESSED').toUpperCase();
   const classes = {
     CRITICAL: 'risk-badge-critical',

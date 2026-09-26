@@ -1,8 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { 
-  CheckSquare, Filter, Download, UserCheck, AlertOctagon, 
-  Search, Check, RefreshCw, ChevronDown, ChevronRight, Layers, Building2, CheckCircle2 
-} from 'lucide-react';
+﻿import React, { useState, useEffect, useMemo } from 'react';
+import { CheckSquare, Filter, Download, Search, Check, RefreshCw, Building2, CheckCircle2 } from 'lucide-react';
 import { getSamplingPlan, updateSampleReview } from '../api';
 import RiskBadge from '../components/RiskBadge';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -179,18 +176,18 @@ export default function ReviewQueuePage({ batchId }) {
   if (loading && !data) return <LoadingSpinner message="Calculating stratified sampling budget..." />;
 
   return (
-    <div className="max-w-[1700px] mx-auto p-6 space-y-6 pb-20">
+    <div className="max-w-[1600px] mx-auto px-6 py-5 space-y-5 pb-20">
       
       {/* Toast */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-emerald-700 text-white px-4 py-2.5 rounded-lg shadow-lg flex items-center gap-2 text-xs font-semibold animate-in fade-in">
+        <div className="fixed bottom-6 right-6 z-50 bg-emerald-600 text-white px-4 py-2.5 rounded-lg shadow-lg flex items-center gap-2 text-xs font-semibold animate-in fade-in">
           <Check className="w-4 h-4" />
           {toastMessage}
         </div>
       )}
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-line pb-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-blue-700 uppercase tracking-wider mb-1">
             <CheckSquare className="w-4 h-4" />
@@ -209,7 +206,7 @@ export default function ReviewQueuePage({ batchId }) {
           <button
             onClick={handleExportCsv}
             disabled={!samples.length}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 shadow-xs transition-colors disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold bg-paper hover:bg-slate-50 border border-slate-300 text-slate-700 shadow-xs transition-colors disabled:opacity-50"
           >
             <Download className="w-3.5 h-3.5 text-slate-500" />
             Export Sample List (CSV)
@@ -223,7 +220,7 @@ export default function ReviewQueuePage({ batchId }) {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
         
         {/* Sample Budget Adjuster Card */}
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs flex flex-col justify-between">
+        <div className="bg-paper border border-line rounded-lg p-4 shadow-xs flex flex-col justify-between">
           <div>
             <div className="text-[10px] font-bold uppercase text-slate-500 tracking-wider mb-1">
               Sample Budgeting Control
@@ -236,12 +233,12 @@ export default function ReviewQueuePage({ batchId }) {
                 step="5"
                 value={sampleSize}
                 onChange={(e) => setSampleSize(Number(e.target.value))}
-                className="w-24 px-2.5 py-1.5 text-sm font-mono font-bold bg-slate-50 border border-slate-200 rounded focus:bg-white focus:border-blue-500 focus:outline-none"
+                className="w-24 px-2.5 py-1.5 text-sm font-mono font-bold bg-slate-50 border border-line rounded focus:bg-slate-100 focus:border-brand-800 focus:outline-none"
               />
               <button
                 onClick={() => fetchPlan(sampleSize)}
                 disabled={loading}
-                className="px-3 py-1.5 rounded text-xs font-semibold bg-blue-700 hover:bg-blue-800 text-white transition-colors disabled:opacity-50 flex items-center gap-1"
+                className="px-3 py-1.5 rounded text-xs font-semibold bg-blue-500 hover:bg-blue-600 text-white transition-colors disabled:opacity-50 flex items-center gap-1"
               >
                 <RefreshCw className={`w-3 h-3 ${loading ? 'animate-spin' : ''}`} />
                 Re-sample
@@ -254,13 +251,13 @@ export default function ReviewQueuePage({ batchId }) {
         </div>
 
         {/* KPIs */}
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+        <div className="bg-paper border border-line rounded-lg p-4 shadow-xs">
           <div className="text-[11px] font-semibold uppercase text-slate-500 tracking-wider">Total Sampled</div>
           <div className="text-2xl font-bold font-mono text-slate-900 mt-1">{stats.total_sampled}</div>
           <div className="text-[11px] text-slate-400 mt-0.5">Records across {entityBudgets.length} entities</div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+        <div className="bg-paper border border-line rounded-lg p-4 shadow-xs">
           <div className="text-[11px] font-semibold uppercase text-emerald-600 tracking-wider">Reviewed Records</div>
           <div className="text-2xl font-bold font-mono text-emerald-700 mt-1">{stats.total_reviewed}</div>
           <div className="text-[11px] text-slate-400 mt-0.5">
@@ -268,7 +265,7 @@ export default function ReviewQueuePage({ batchId }) {
           </div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+        <div className="bg-paper border border-line rounded-lg p-4 shadow-xs">
           <div className="text-[11px] font-semibold uppercase text-amber-600 tracking-wider">Pending Supervisory Action</div>
           <div className="text-2xl font-bold font-mono text-amber-700 mt-1">{stats.pending_review}</div>
           <div className="text-[11px] text-slate-400 mt-0.5">Awaiting human validation</div>
@@ -277,7 +274,7 @@ export default function ReviewQueuePage({ batchId }) {
       </div>
 
       {/* Entity Budget Stratification Chips */}
-      <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs">
+      <div className="bg-paper border border-line rounded-lg p-4 shadow-xs">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800 uppercase tracking-wider">
             <Building2 className="w-3.5 h-3.5 text-blue-700" />
@@ -293,8 +290,8 @@ export default function ReviewQueuePage({ batchId }) {
             onClick={() => setEntityFilter('ALL')}
             className={`px-2.5 py-1 rounded text-xs font-semibold transition-colors ${
               entityFilter === 'ALL'
-                ? 'bg-blue-700 text-white shadow-xs'
-                : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200'
+                ? 'bg-blue-500 text-white shadow-xs'
+                : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-line'
             }`}
           >
             All Entities ({samples.length})
@@ -307,13 +304,13 @@ export default function ReviewQueuePage({ batchId }) {
                 onClick={() => setEntityFilter(isSelected ? 'ALL' : eb.cse_id)}
                 className={`px-2.5 py-1 rounded text-xs font-mono transition-colors flex items-center gap-1.5 border ${
                   isSelected
-                    ? 'bg-blue-700 text-white border-blue-800 font-bold shadow-xs'
-                    : 'bg-slate-50 hover:bg-slate-100 text-slate-800 border-slate-200'
+                    ? 'bg-blue-500 text-white border-blue-800 font-bold shadow-xs'
+                    : 'bg-slate-50 hover:bg-slate-100 text-slate-800 border-line'
                 }`}
               >
                 <span>{eb.cse_id}</span>
                 <span className={`px-1.5 py-0.2 rounded text-[10px] font-bold ${
-                  isSelected ? 'bg-blue-900 text-white' : 'bg-slate-200 text-slate-700'
+                  isSelected ? 'bg-blue-500 text-white' : 'bg-slate-200 text-slate-700'
                 }`}>
                   {eb.allocated_count}
                 </span>
@@ -324,7 +321,7 @@ export default function ReviewQueuePage({ batchId }) {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-xs space-y-3">
+      <div className="bg-paper border border-line rounded-lg p-4 shadow-xs space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-4">
           
           <div className="relative flex-1 min-w-[260px] max-w-md">
@@ -334,7 +331,7 @@ export default function ReviewQueuePage({ batchId }) {
               placeholder="Search by Evidence ID, CSE, rule or notes..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded focus:bg-white focus:border-blue-500 focus:outline-none"
+              className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-line rounded focus:bg-slate-100 focus:border-brand-800 focus:outline-none"
             />
           </div>
 
@@ -345,7 +342,7 @@ export default function ReviewQueuePage({ batchId }) {
               <select
                 value={stratumFilter}
                 onChange={(e) => setStratumFilter(e.target.value)}
-                className="px-2 py-1 text-xs bg-slate-50 border border-slate-200 rounded font-medium text-slate-700 focus:bg-white focus:outline-none"
+                className="px-2 py-1 text-xs bg-slate-50 border border-line rounded font-medium text-slate-700 focus:bg-slate-100 focus:outline-none"
               >
                 <option value="ALL">All Strata</option>
                 {uniqueStrata.map(s => (
@@ -364,8 +361,8 @@ export default function ReviewQueuePage({ batchId }) {
                     onClick={() => setReviewFilter(st)}
                     className={`px-2.5 py-1 rounded font-semibold text-xs transition-colors ${
                       reviewFilter === st
-                        ? 'bg-blue-700 text-white shadow-xs'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+                        ? 'bg-blue-500 text-white shadow-xs'
+                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-line'
                     }`}
                   >
                     {st}
@@ -379,10 +376,10 @@ export default function ReviewQueuePage({ batchId }) {
       </div>
 
       {/* Samples Table */}
-      <div className="bg-white border border-slate-200 rounded-lg shadow-xs overflow-hidden">
+      <div className="bg-paper border border-line rounded-lg shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-600 border-b border-slate-200 uppercase font-semibold text-[11px] tracking-wider select-none">
+            <thead className="bg-slate-50 text-slate-600 border-b border-line uppercase font-semibold text-[11px] tracking-wider select-none">
               <tr>
                 <th className="p-3 w-10 text-center">Status</th>
                 <th className="p-3">Evidence ID</th>
@@ -395,11 +392,16 @@ export default function ReviewQueuePage({ batchId }) {
                 <th className="p-3 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-line">
               {filteredSamples.length === 0 ? (
                 <tr>
-                  <td colSpan="9" className="p-8 text-center text-slate-400 italic">
-                    No sample records match current filter criteria.
+                  <td colSpan="9" className="p-8 text-center">
+                    <div className="empty-state">
+                      <span className="empty-state-title">No review-queue samples match the current filters</span>
+                      <span className="empty-state-body">
+                        Adjust the filters above, or run a new assessment and open the <span className="font-semibold text-blue-700">Findings registry</span> to start supervised triage.
+                      </span>
+                    </div>
                   </td>
                 </tr>
               ) : (
@@ -499,9 +501,9 @@ export default function ReviewQueuePage({ batchId }) {
 
       {/* Review Details Modal */}
       {reviewingItem && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg border border-slate-200 shadow-xl max-w-md w-full p-6 space-y-4 animate-in zoom-in-95">
-            <div className="flex items-start justify-between border-b border-slate-100 pb-3">
+        <div className="fixed inset-0 z-50 bg-ink/45 flex items-center justify-center p-4">
+          <div className="bg-paper rounded-lg border border-line shadow-xl max-w-md w-full p-6 space-y-4 animate-in zoom-in-95">
+            <div className="flex items-start justify-between border-b border-line pb-3">
               <div>
                 <div className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">
                   Sample Evidence Audit
@@ -519,7 +521,7 @@ export default function ReviewQueuePage({ batchId }) {
             </div>
 
             <div className="space-y-3 text-xs">
-              <div className="bg-slate-50 border border-slate-200 rounded p-2.5 font-mono text-[11px] space-y-1">
+              <div className="bg-slate-50 border border-line rounded p-2.5 font-mono text-[11px] space-y-1">
                 <div><strong>Record Type:</strong> {reviewingItem.record_type}</div>
                 <div><strong>Stratum:</strong> {reviewingItem.stratum}</div>
                 <div><strong>Rule / Event:</strong> {reviewingItem.rule_or_event || '—'}</div>
@@ -534,7 +536,7 @@ export default function ReviewQueuePage({ batchId }) {
                   type="text"
                   value={reviewerName}
                   onChange={(e) => setReviewerName(e.target.value)}
-                  className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded focus:bg-white focus:border-blue-500 focus:outline-none"
+                  className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-line rounded focus:bg-slate-100 focus:border-brand-800 focus:outline-none"
                 />
               </div>
 
@@ -547,16 +549,16 @@ export default function ReviewQueuePage({ batchId }) {
                   onChange={(e) => setReviewNotes(e.target.value)}
                   placeholder="Record verification comments, confirmation of alert legitimacy, dwell anomalies, etc."
                   rows="3"
-                  className="w-full p-2.5 text-xs bg-slate-50 border border-slate-200 rounded focus:bg-white focus:border-blue-500 focus:outline-none"
+                  className="w-full p-2.5 text-xs bg-slate-50 border border-line rounded focus:bg-slate-100 focus:border-brand-800 focus:outline-none"
                 />
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-line">
               <button
                 type="button"
                 onClick={() => setReviewingItem(null)}
-                className="px-3 py-1.5 rounded text-xs font-semibold text-slate-600 hover:bg-slate-100 border border-slate-200 transition-colors"
+                className="px-3 py-1.5 rounded text-xs font-semibold text-slate-600 hover:bg-slate-100 border border-line transition-colors"
               >
                 Cancel
               </button>
@@ -564,7 +566,7 @@ export default function ReviewQueuePage({ batchId }) {
                 type="button"
                 disabled={updatingReview}
                 onClick={handleSaveDetailedReview}
-                className="px-4 py-1.5 rounded text-xs font-semibold bg-emerald-700 hover:bg-emerald-800 text-white transition-colors disabled:opacity-50 flex items-center gap-1.5"
+                className="px-4 py-1.5 rounded text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition-colors disabled:opacity-50 flex items-center gap-1.5"
               >
                 {updatingReview ? 'Recording...' : 'Mark as Reviewed'}
               </button>

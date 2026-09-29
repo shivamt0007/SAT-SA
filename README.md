@@ -16,21 +16,21 @@
 
 Traditional cybersecurity supervision of Critical Sector Entities (such as power grids, banking institutions, telecommunications, transport, and defence contractors) largely relies on **self-assessment questionnaires, subjective attestations, and periodic point-in-time audits**. These methods often fail to reflect actual operational effectiveness, leaving blind spots and undetected operational drift.
 
-**SAT-SA (Supervisory Analytics Tool for SOC Assessment)** revolutionizes cybersecurity oversight by pivoting supervision from **declarative claims** to **empirical operational telemetry**. By analyzing raw security operation logs—including alert streams, incident ticketing cases, asset inventories, and triage metrics—SAT-SA computes quantitative risk scores, identifies peer deviations, uncovers negative-space anomalies, and automates supervisory workflows.
+**SAT-SA (Supervisory Analytics Tool for SOC Assessment)** revolutionizes cybersecurity oversight by pivoting supervision from **declarative claims** to **empirical operational telemetry**. By analyzing raw security operation logs including alert streams, incident ticketing cases, asset inventories, and triage metrics SAT-SA computes quantitative risk scores, identifies peer deviations, uncovers negative-space anomalies, and automates supervisory workflows.
 
 ---
 
 ## 🚀 Core Features & Innovations
 
 ### 1. 🔍 Negative-Space Detection Engine
-Unlike conventional SIEMs and monitoring systems that only trigger on known attack signatures, SAT-SA detects **Negative Space**—identifying what *should* be present in an active, healthy Security Operations Center (SOC) but is suspiciously absent:
-- **Dormancy & Quiet Periods**: Identifies unnatural zero-alert windows, off-hours silence, or weekend log drops indicating telemetry suppression or log pipeline failures.
+Unlike conventional SIEMs and monitoring systems that only trigger on known attack signatures, SAT-SA detects **Negative Space** identifying what *should* be present in an active, healthy Security Operations Center (SOC) but is suspiciously absent:
+- **Dormancy & Quiet Periods**: Identifies unnatural zero alert windows, off hours silence, or weekend log drops indicating telemetry suppression or log pipeline failures.
 - **Triage Suppression & Severity Inversion**: Uncovers entities suppressing Critical/High-severity alerts or closing incidents abnormally fast without forensic artifact attachment.
-- **Dark Asset Coverage**: Cross-references active IP/hostname telemetry against authoritative asset registers to flag unmonitored critical infrastructure.
+- **Dark Asset Coverage**: Cross references active IP/hostname telemetry against authoritative asset registers to flag unmonitored critical infrastructure.
 
 ### 2. 🌐 Sector-Wide Systemic Risk Radar
 - **Cross-Entity Clustering**: Aggregates operational telemetry across all sector participants to identify correlated systemic failures.
-- **Contagion & Supply-Chain Risk**: Pinpoints shared technology stack vulnerabilities, widespread vendor misconfigurations, and systemic compliance lapses affecting multiple entities simultaneously.
+- **Contagion & Supply Chain Risk**: Pinpoints shared technology stack vulnerabilities, widespread vendor misconfigurations, and systemic compliance lapses affecting multiple entities simultaneously.
 
 ### 3. 🛡️ NCIIPC 8-Capability Compliance Framework
 Maps operational evidence directly to the **NCIIPC (National Critical Information Infrastructure Protection Centre)** Cybersecurity Capability Framework:
